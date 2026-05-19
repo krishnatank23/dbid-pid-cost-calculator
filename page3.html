@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LendFlow | DBTL (Distributor Term Loan)</title>
+    <meta name="description" content="Premium term financing platform for Distributors. Calculate processing fees, GST, total interest, and generate detailed monthly repayment schedules.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode mode-dbtl">
+    <!-- Background Decorative Elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-logo">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="url(#brandGrad)" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="brandGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="var(--accent-primary)"/>
+                                <stop offset="1" stop-color="var(--accent-secondary)"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="brand-name">Lend<span>Flow</span></span>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item" id="nav-page-1">
+                    <div class="nav-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="9" y1="3" x2="9" y2="21"/>
+                            <line x1="9" y1="9" x2="21" y2="9"/>
+                            <line x1="9" y1="15" x2="21" y2="15"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">
+                        <span class="nav-title-main">DBID-PID</span>
+                        <span class="nav-title-sub">(Distributor & Purchase Invoice Discounting)</span>
+                    </div>
+                </a>
+                <a href="page2.html" class="nav-item" id="nav-page-2">
+                    <div class="nav-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">
+                        <span class="nav-title-main">SCF</span>
+                        <span class="nav-title-sub">(Supply Chain Finance)</span>
+                    </div>
+                </a>
+                <a href="page3.html" class="nav-item active" id="nav-page-3">
+                    <div class="nav-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <div class="nav-label">
+                        <span class="nav-title-main">DBTL</span>
+                        <span class="nav-title-sub">(Distributor Term Loan)</span>
+                    </div>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">KT</div>
+                    <div class="user-info">
+                        <span class="user-name">Krishna Tank</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-bar">
+                <div class="header-title">
+                    <h1>Distributor Term Loan (DBTL)</h1>
+                    <p class="subtitle">Borrower: Distributor | Interest Borne by Distributor | Equal Principal Term Repayments</p>
+                </div>
+                <div class="header-actions">
+                    <div class="theme-toggle" id="theme-mode-btn" title="Toggle Light/Dark Mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                        </svg>
+                    </div>
+                    <div class="date-indicator">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        <span id="current-time-display">May 19, 2026</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Grid Layout -->
+            <div class="dashboard-grid">
+                
+                <!-- ROW 1: Active Financing Structure (Rectangular Grid) -->
+                <section class="grid-card full-width active-structure-card">
+                    <div class="structure-grid">
+                        <div class="structure-info">
+                            <div class="structure-badge" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);">DBTL</div>
+                            <div>
+                                <h2 style="font-family: var(--font-heading); font-weight: 700; font-size: 18px; color: var(--text-primary); margin-bottom: 4px;">Distributor Term Loan (DBTL)</h2>
+                                <p class="card-desc" style="margin: 0;">Distributor-led Equal Principal Amortizing Term Loan Program</p>
+                            </div>
+                        </div>
+                        <div class="structure-metrics">
+                            <div class="structure-metric">
+                                <span class="metric-label">Borrower</span>
+                                <span class="metric-value" style="color: var(--accent-primary); font-weight: 700;">Distributor</span>
+                            </div>
+                            <div class="structure-metric">
+                                <span class="metric-label">Interest Bearer/Invoice Submitted By</span>
+                                <span class="metric-value">Distributor</span>
+                            </div>
+                            <div class="structure-metric">
+                                <span class="metric-label">Repayment Schedule</span>
+                                <span class="metric-value">Monthly Equated Principal (EMI)</span>
+                            </div>
+                            <div class="structure-metric">
+                                <span class="metric-label">Processing Fees</span>
+                                <span class="metric-value">0.50% (One-time cost)</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ROW 2: Left Side - Loan Parameters Input Form -->
+                <section class="grid-card calc-input-card">
+                    <div class="card-header">
+                        <div class="header-title-group">
+                            <div class="card-icon-container">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2>Term Loan Parameters</h2>
+                                <p class="card-desc">Configure principal amount, dates, rate & tenure settings</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="calculator-form" id="loan-form" onsubmit="event.preventDefault();">
+                        
+                        <!-- Limit Info Alert -->
+                        <div class="limit-alert-box">
+                            <div class="limit-alert-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/>
+                                </svg>
+                            </div>
+                            <div class="limit-alert-text">
+                                Allowed Range: <strong id="min-limit-display">₹1,00,000</strong> to <strong id="max-limit-display">₹2,00,00,000</strong> (2 Crore)
+                            </div>
+                        </div>
+
+                        <!-- Loan Amount Field -->
+                        <div class="input-group">
+                            <div class="input-header">
+                                <label for="loan-amount">Loan Amount (₹)</label>
+                                <span class="input-validation-msg" id="amount-validation-msg"></span>
+                            </div>
+                            <div class="input-wrapper currency-input">
+                                <span class="input-prefix">₹</span>
+                                <input type="text" id="loan-amount" class="form-control numeric-input" placeholder="100,000" value="100,000" autocomplete="off">
+                            </div>
+                            <div class="slider-wrapper">
+                                <input type="range" id="loan-amount-slider" min="100000" max="20000000" step="100000" value="100000" class="styled-slider">
+                                <div class="slider-limits">
+                                    <span>1 Lakh</span>
+                                    <span>1 Crore</span>
+                                    <span>2 Crore</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid for Disbursal Date & Tenure -->
+                        <div class="form-row-grid">
+                            <!-- Disbursal Date Field -->
+                            <div class="input-group">
+                                <label for="loan-date">Date of Disbursal</label>
+                                <div class="input-wrapper">
+                                    <input type="date" id="loan-date" class="form-control" value="2026-05-15">
+                                </div>
+                            </div>
+
+                            <!-- Tenure Field -->
+                            <div class="input-group">
+                                <label for="loan-tenure">Tenure (Months)</label>
+                                <div class="input-wrapper number-input">
+                                    <input type="number" id="loan-tenure" class="form-control" min="1" max="60" value="6" step="1">
+                                    <span class="input-suffix">Months</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid for EMI Date & ROI -->
+                        <div class="form-row-grid">
+                            <!-- EMI Date Day of Month -->
+                            <div class="input-group">
+                                <label for="emi-due-day">EMI Date (Day of Month)</label>
+                                <div class="input-wrapper number-input">
+                                    <input type="number" id="emi-due-day" class="form-control" min="1" max="28" value="8" step="1">
+                                    <span class="input-suffix">Day</span>
+                                </div>
+                            </div>
+
+                            <!-- Annual Rate of Interest (ROI) -->
+                            <div class="input-group">
+                                <label for="interest-rate">Annual ROI (% p.a.)</label>
+                                <div class="input-wrapper number-input">
+                                    <input type="number" id="interest-rate" class="form-control" min="1" max="50" value="13.00" step="0.05">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grid for Processing Fees & Broken Days -->
+                        <div class="form-row-grid">
+                            <!-- Processing Fees -->
+                            <div class="input-group">
+                                <label for="processing-fee-pct">Processing Fees (%)</label>
+                                <div class="input-wrapper number-input">
+                                    <input type="number" id="processing-fee-pct" class="form-control" min="0" max="5" value="0.50" step="0.05">
+                                    <span class="input-suffix">%</span>
+                                </div>
+                            </div>
+
+                            <!-- Broken Days (Read-only / Auto) -->
+                            <div class="input-group readonly-group">
+                                <label>Broken Days</label>
+                                <div class="input-wrapper readonly">
+                                    <input type="text" id="broken-days-display" class="form-control" readonly value="0">
+                                    <span class="readonly-badge">Auto</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </section>
+
+                <!-- ROW 2: Right Side - Term Loan Live Summary Details -->
+                <section class="grid-card calc-output-card output-panel">
+                    <div class="output-glow-overlay"></div>
+                    <div class="card-header">
+                        <div class="header-title-group">
+                            <div class="card-icon-container bg-primary-light">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2>Financing Summary</h2>
+                                <p class="card-desc">Accrued interest, processing fees, and overall cost structure</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="calculation-summary-container">
+                        <!-- Primary Large Display -->
+                        <div class="primary-output-hero">
+                            <span class="output-hero-label">Monthly EMI Amount</span>
+                            <div class="output-hero-val" id="emi-amount-display">₹17,723</div>
+                            <div class="output-breakdown-subtext">
+                                Monthly Principal <span id="monthly-principal-display">₹16,667</span> + Interest <span id="monthly-interest-display">₹1,057</span>
+                            </div>
+                        </div>
+
+                        <!-- Key Metrics Grid -->
+                        <div class="metrics-summary-grid" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
+                            <div class="metric-summary-box">
+                                <div class="metric-content">
+                                    <span class="metric-label">Interest (Total)</span>
+                                    <span class="metric-val text-accent" id="total-interest-display">₹6,340</span>
+                                </div>
+                            </div>
+
+                            <div class="metric-summary-box">
+                                <div class="metric-content">
+                                    <span class="metric-label">One-Time PF Dues</span>
+                                    <span class="metric-val" id="total-pf-display">₹590</span>
+                                    <span style="font-size: 10px; color: var(--text-muted);">Includes 18% GST (₹90)</span>
+                                </div>
+                            </div>
+
+                            <div class="metric-summary-box">
+                                <div class="metric-content">
+                                    <span class="metric-label">Total Finance Cost</span>
+                                    <span class="metric-val" id="total-cost-display">₹6,930</span>
+                                    <span style="font-size: 10px; color: var(--text-muted);">Interest + PF with GST</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Visual Ratio Bar -->
+                        <div class="ratio-bar-section">
+                            <div class="ratio-labels">
+                                <span>Principal (93.5%)</span>
+                                <span>Total Cost (6.5%)</span>
+                            </div>
+                            <div class="ratio-bar-track">
+                                <div class="ratio-bar-fill principal-fill" id="ratio-bar-principal" style="width: 93.5%"></div>
+                                <div class="ratio-bar-fill interest-fill" id="ratio-bar-cost" style="width: 6.5%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Proceed Button (For transitioning or submitting) -->
+                        <button class="btn btn-primary btn-block" id="proceed-button" onclick="handleProceedAction()" style="margin-top: 15px;">
+                            <span>Acknowledge & Save Term Loan</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                            </svg>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- ROW 3: Detailed Monthly Repayment Schedule Table -->
+                <section class="grid-card full-width">
+                    <div class="card-header">
+                        <div class="header-title-group">
+                            <div class="card-icon-container">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2>Detailed Monthly Repayment Schedule</h2>
+                                <p class="card-desc">Complete ledger of monthly equal installments, amortized interest, and remaining principal balances</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <!-- Amortization Repayment Table -->
+                        <div class="schedule-table-wrapper">
+                            <table class="schedule-table">
+                                <thead>
+                                    <tr>
+                                        <th>EMI No</th>
+                                        <th>EMI Date</th>
+                                        <th>Principal Repayment</th>
+                                        <th>Interest Repayment</th>
+                                        <th>Total EMI Installment</th>
+                                        <th>Balance Principal Outstanding</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="repayment-schedule-body">
+                                    <!-- Populated dynamically via app3.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Locked Page Placeholder Modal -->
+    <div class="modal-overlay" id="locked-page-modal">
+        <div class="modal-container">
+            <div class="modal-close-btn" onclick="closeLockedModal()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </div>
+            <div class="modal-illustration">
+                <div class="lock-sphere">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </div>
+            </div>
+            <h3 id="modal-page-title">Page Title</h3>
+            <p class="modal-description">Amortized term-lending calculations are fully active in this modular platform release!</p>
+            <div class="modal-features-preview">
+                <span class="preview-badge">Amortization Table</span>
+                <span class="preview-badge">GST Calculations</span>
+                <span class="preview-badge">Broken Period Handling</span>
+            </div>
+            <button class="btn btn-secondary btn-block" onclick="closeLockedModal()">Understood</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification System -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Application Script -->
+    <script src="app3.js"></script>
+</body>
+</html>
