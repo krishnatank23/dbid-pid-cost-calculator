@@ -70,6 +70,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalPageTitle = document.getElementById('modal-page-title');
     const toastContainer = document.getElementById('toast-container');
 
+    // ── Chart.js Doughnut Chart Setup ──
+    let breakupChart = null;
+    const breakupChartCanvas = document.getElementById('breakupChart');
+    if (breakupChartCanvas) {
+        const chartCtx = breakupChartCanvas.getContext('2d');
+        // Read CSS variables for theme-aware colors
+        const computedStyle = getComputedStyle(document.documentElement);
+        const accentPrimary = computedStyle.getPropertyValue('--accent-primary').trim() || '#1169B2';
+        const accentSecondary = computedStyle.getPropertyValue('--accent-secondary').trim() || '#FFCE07';
+        
+        breakupChart = new Chart(chartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Principal Amount', 'Total Interest'],
+                datasets: [{
+                    data: [97.4, 2.6],
+                    backgroundColor: [accentPrimary, accentSecondary],
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '60%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 18, 28, 0.9)',
+                        titleFont: { family: 'Outfit', weight: '700', size: 13 },
+                        bodyFont: { family: 'Plus Jakarta Sans', size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.label}: ${context.parsed.toFixed(1)}%`;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateRotate: true,
+                    duration: 600
+                }
+            }
+        });
+    }
+
+    function updateBreakupChart(principalPct, interestPct) {
+        if (!breakupChart) return;
+        breakupChart.data.datasets[0].data = [principalPct, interestPct];
+        // Re-read CSS vars in case theme changed
+        const cs = getComputedStyle(document.documentElement);
+        breakupChart.data.datasets[0].backgroundColor = [
+            cs.getPropertyValue('--accent-primary').trim() || '#1169B2',
+            cs.getPropertyValue('--accent-secondary').trim() || '#FFCE07'
+        ];
+        breakupChart.update();
+    }
+
     // Current Time Setup (Dynamic System Time & Day)
     const initDate = new Date();
     document.getElementById('current-time-display').innerHTML = formatDateWithDay(initDate);
@@ -351,6 +411,9 @@ document.addEventListener('DOMContentLoaded', () => {
             <span>Principal (${principalPct.toFixed(1)}%)</span>
             <span>Interest (${interestPct.toFixed(1)}%)</span>
         `;
+
+        // Update Doughnut Chart
+        updateBreakupChart(principalPct, interestPct);
     }
 
     /* ==========================================================================

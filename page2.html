@@ -15,6 +15,8 @@
         rel="stylesheet">
     <!-- Main Style Sheet -->
     <link rel="stylesheet" href="style.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 </head>
 
 <body class="dark-mode mode-pid">
@@ -394,6 +396,26 @@
                             <div class="ratio-bar-track">
                                 <div class="ratio-bar-fill principal-fill" style="width: 97.47%"></div>
                                 <div class="ratio-bar-fill interest-fill" style="width: 2.53%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Doughnut Chart: Break-up of Total Payment -->
+                        <div class="chart-section" style="margin: 24px 0;">
+                            <h3 style="font-family: var(--font-heading); font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; text-align: center;">Break-up of Total Payment</h3>
+                            <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                                <div style="position: relative; width: 200px; height: 200px;">
+                                    <canvas id="breakupChart"></canvas>
+                                </div>
+                                <div id="chart-legend" style="display: flex; flex-direction: column; gap: 12px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="width: 14px; height: 14px; border-radius: 3px; background: var(--accent-primary); display: inline-block;"></span>
+                                        <span style="font-size: 12.5px; color: var(--text-secondary);">Principal Amount</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="width: 14px; height: 14px; border-radius: 3px; background: var(--accent-secondary); display: inline-block;"></span>
+                                        <span style="font-size: 12.5px; color: var(--text-secondary);">Total Interest</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
