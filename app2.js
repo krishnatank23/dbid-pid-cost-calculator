@@ -69,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalPageTitle = document.getElementById('modal-page-title');
     const toastContainer = document.getElementById('toast-container');
 
-    // Current Time Setup (Sync to 2026-05-19)
-    const initDate = new Date('2026-05-19');
-    document.getElementById('current-time-display').textContent = formatDateLong(initDate);
+    // Current Time Setup (Dynamic System Time & Day)
+    const initDate = new Date();
+    document.getElementById('current-time-display').innerHTML = formatDateWithDay(initDate);
 
     /* ==========================================================================
        Operational Flow Configuration
@@ -146,12 +146,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const day = String(d.getUTCDate()).padStart(2, '0');
         const month = String(d.getUTCMonth() + 1).padStart(2, '0');
         const year = d.getUTCFullYear();
-        return `${month}/${day}/${year}`; // MM/DD/YYYY format for calculator fields
+        return `${day}/${month}/${year}`; // DD/MM/YYYY format
     }
 
     function formatDateLong(date) {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+    }
+
+    function formatDateWithDay(date) {
+        const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        return `<div class="date-display-wrapper">
+                    <div class="date-display-first">${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}</div>
+                    <div class="date-display-second">${days[date.getDay()]}</div>
+                </div>`;
     }
 
     /* ==========================================================================
@@ -491,10 +500,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const isLight = body.classList.contains('light-mode');
         
         if (isLight) {
+            localStorage.setItem('theme', 'light');
             sunIcon.style.display = 'none';
             moonIcon.style.display = 'block';
             showToast('Visual Style Updated', 'Switched to elegant Light Mode dashboard style.');
         } else {
+            localStorage.setItem('theme', 'dark');
             sunIcon.style.display = 'block';
             moonIcon.style.display = 'none';
             showToast('Visual Style Updated', 'Returned to ambient Dark Mode dashboard style.');
@@ -595,6 +606,18 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        Initialization
        ========================================================================== */
+    // Apply persistent theme from localStorage on page load
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        if (sunIcon) sunIcon.style.display = 'none';
+        if (moonIcon) moonIcon.style.display = 'block';
+    } else {
+        body.classList.remove('light-mode');
+        if (sunIcon) sunIcon.style.display = 'block';
+        if (moonIcon) moonIcon.style.display = 'none';
+    }
+
     // Synchronize UI elements with state parameters on initial page load
     loanAmountInput.value = state.loanAmount.toLocaleString('en-IN');
     loanAmountSlider.value = state.loanAmount;
