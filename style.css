@@ -1,106 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
 /* ==========================================================================
    LendFlow - Premium Invoice Discounting Platform CSS Stylesheet
    ========================================================================== */
 
 /* Design Tokens & Theme Variables */
 :root {
-    /* Base Neutral System (Dark Theme Default - Custom Dark Navy shades of #1169B2) */
-    --bg-base: #070D19;
-    --bg-card: rgba(14, 23, 41, 0.7);
-    --bg-card-hover: rgba(22, 35, 61, 0.85);
-    --border-color: rgba(17, 105, 178, 0.12);
-    --border-color-focus: rgba(17, 105, 178, 0.35);
-    
-    --text-primary: #F8FAFC;
-    --text-secondary: #94A3B8;
-    --text-muted: #64748B;
-    
+    /* Wofi Design Direction Variables */
+    --bg-base: #000000;
+    --bg-card: #171717;
+    --bg-card-hover: #202020;
+    --border-color: rgba(172, 172, 172, 0.20);
+    --border-color-focus: #FFCB05;
+
+    --text-primary: #FFFFFF;
+    --text-secondary: #A4A4A4;
+    --text-muted: #777777;
+
     --danger: #EF4444;
     --danger-glow: rgba(239, 68, 68, 0.15);
-    --warning: #FFCE07;
-    --success: #1169B2;
-    
+    --warning: #FFCB05;
+    --success: #1068B2;
+
     /* Layout */
     --sidebar-width: 280px;
     --header-height: 80px;
-    --border-radius-lg: 16px;
-    --border-radius-md: 12px;
-    --border-radius-sm: 8px;
-    
+    --border-radius-lg: 24px;
+    --border-radius-md: 16px;
+    --border-radius-sm: 10px;
+
     /* Font Stack */
-    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-heading: 'Pluto Sans', 'Outfit', sans-serif;
+    --font-body: 'Montserrat', sans-serif;
 
     /* Transition Profiles */
     --transition-fast: 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
     --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Theme Variant 1: DBID (Deep Professional Blue & Yellow Theme) */
+/* Theme Variant 1: DBID (Wofi Dual Accent Theme) */
 body.mode-dbid {
-    --accent-primary: #1169B2;
-    --accent-secondary: #FFCE07;
-    --accent-glow: rgba(17, 105, 178, 0.15);
-    --accent-glow-strong: rgba(17, 105, 178, 0.35);
-    --accent-bg-soft: rgba(17, 105, 178, 0.08);
-    --glow-color-1: rgba(17, 105, 178, 0.1);
-    --glow-color-2: rgba(255, 206, 7, 0.06);
+    --accent-primary: #1068B2;
+    /* Wofi Blue */
+    --accent-secondary: #FFCB05;
+    /* Wofi Yellow */
+    --accent-glow: rgba(16, 104, 178, 0.15);
+    --accent-glow-strong: rgba(16, 104, 178, 0.35);
+    --accent-bg-soft: rgba(16, 104, 178, 0.08);
+    --glow-color-1: rgba(16, 104, 178, 0.15);
+    /* radial a */
+    --glow-color-2: rgba(255, 203, 5, 0.15);
+    /* radial b */
 }
 
-/* Theme Variant 2: PID (Deep Professional Blue & Yellow Theme) */
+/* Theme Variant 2: PID (Wofi Dual Accent Theme) */
 body.mode-pid {
-    --accent-primary: #1169B2;
-    --accent-secondary: #FFCE07;
-    --accent-glow: rgba(17, 105, 178, 0.15);
-    --accent-glow-strong: rgba(17, 105, 178, 0.35);
-    --accent-bg-soft: rgba(17, 105, 178, 0.08);
-    --glow-color-1: rgba(17, 105, 178, 0.1);
-    --glow-color-2: rgba(255, 206, 7, 0.06);
+    --accent-primary: #1068B2;
+    --accent-secondary: #FFCB05;
+    --accent-glow: rgba(16, 104, 178, 0.15);
+    --accent-glow-strong: rgba(16, 104, 178, 0.35);
+    --accent-bg-soft: rgba(16, 104, 178, 0.08);
+    --glow-color-1: rgba(16, 104, 178, 0.15);
+    --glow-color-2: rgba(255, 203, 5, 0.15);
 }
 
-/* Theme Variant 3: DBTL (Deep Professional Blue & Yellow Theme) */
+/* Theme Variant 3: DBTL (Wofi Dual Accent Theme) */
 body.mode-dbtl {
-    --accent-primary: #1169B2;
-    --accent-secondary: #FFCE07;
-    --accent-glow: rgba(17, 105, 178, 0.15);
-    --accent-glow-strong: rgba(17, 105, 178, 0.35);
-    --accent-bg-soft: rgba(17, 105, 178, 0.08);
-    --glow-color-1: rgba(17, 105, 178, 0.1);
-    --glow-color-2: rgba(255, 206, 7, 0.06);
+    --accent-primary: #1068B2;
+    --accent-secondary: #FFCB05;
+    --accent-glow: rgba(16, 104, 178, 0.15);
+    --accent-glow-strong: rgba(16, 104, 178, 0.35);
+    --accent-bg-soft: rgba(16, 104, 178, 0.08);
+    --glow-color-1: rgba(16, 104, 178, 0.15);
+    --glow-color-2: rgba(255, 203, 5, 0.15);
 }
 
-/* Light Mode Overrides (Custom Light Blue-Grey shades) */
+/* Light Mode Overrides (Elegant Warm Light Theme) */
 body.light-mode {
-    --bg-base: #F1F5F9;
+    --bg-base: #F8FAFC;
     --bg-card: rgba(255, 255, 255, 0.85);
     --bg-card-hover: rgba(255, 255, 255, 0.98);
-    --border-color: rgba(17, 105, 178, 0.08);
-    --border-color-focus: rgba(17, 105, 178, 0.25);
-    
-    --text-primary: #0A192F;
-    --text-secondary: #334E68;
-    --text-muted: #627D98;
-    
+    --border-color: rgba(16, 104, 178, 0.08);
+    --border-color-focus: rgba(16, 104, 178, 0.25);
+
+    --text-primary: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+
     --danger: #DC2626;
     --danger-glow: rgba(220, 38, 38, 0.1);
 }
 
 body.light-mode.mode-dbid {
-    --accent-bg-soft: rgba(17, 105, 178, 0.1);
-    --glow-color-1: rgba(17, 105, 178, 0.05);
-    --glow-color-2: rgba(255, 206, 7, 0.03);
+    --accent-bg-soft: rgba(16, 104, 178, 0.06);
+    --glow-color-1: rgba(255, 203, 5, 0.04);
+    --glow-color-2: rgba(16, 104, 178, 0.04);
 }
 
 body.light-mode.mode-pid {
-    --accent-bg-soft: rgba(17, 105, 178, 0.1);
-    --glow-color-1: rgba(17, 105, 178, 0.05);
-    --glow-color-2: rgba(255, 206, 7, 0.03);
+    --accent-bg-soft: rgba(16, 104, 178, 0.06);
+    --glow-color-1: rgba(255, 203, 5, 0.04);
+    --glow-color-2: rgba(16, 104, 178, 0.04);
 }
 
 body.light-mode.mode-dbtl {
-    --accent-bg-soft: rgba(17, 105, 178, 0.1);
-    --glow-color-1: rgba(17, 105, 178, 0.05);
-    --glow-color-2: rgba(255, 206, 7, 0.03);
+    --accent-bg-soft: rgba(16, 104, 178, 0.06);
+    --glow-color-1: rgba(255, 203, 5, 0.04);
+    --glow-color-2: rgba(16, 104, 178, 0.04);
 }
 
 /* Reset & Base Styles */
@@ -358,7 +364,8 @@ body {
     font-family: var(--font-heading);
     font-weight: 800;
     font-size: 14.5px;
-    color: #1169B2; /* WOGOM Brand Blue */
+    color: #1169B2;
+    /* WOGOM Brand Blue */
     letter-spacing: 0.5px;
 }
 
@@ -1406,54 +1413,77 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .flow-step-item {
-    background-color: rgba(255, 255, 255, 0.015);
-    border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-md);
-    padding: 24px;
+    background-color: #171717 !important;
+    /* Premium Glass card fill #171717 */
+    border: 1px solid rgba(172, 172, 172, 0.15) !important;
+    /* Subtle glass card stroke */
+    border-radius: var(--border-radius-md) !important;
+    padding: 24px !important;
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: all var(--transition-smooth);
+    transition: all var(--transition-smooth) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
 }
 
 .flow-step-item:hover {
-    background-color: rgba(255, 255, 255, 0.025);
-    transform: translateY(-4px);
+    background-color: #1a1a1a !important;
+    border-color: var(--accent-primary) !important;
+    /* Glows with active theme color: Wofi Blue or Wofi Yellow! */
+    transform: translateY(-6px) !important;
+    /* Smooth pop-up scaling */
+    box-shadow: 0 12px 30px var(--accent-glow-strong) !important;
+    /* Strong dynamic theme glow! */
 }
 
 .flow-step-number {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    transition: all var(--transition-smooth);
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    background-color: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(172, 172, 172, 0.25) !important;
+    color: var(--accent-secondary) !important;
+    /* Eye-catching Wofi Yellow / Accent gold text! */
+    font-family: var(--font-heading) !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    letter-spacing: normal !important;
+    transition: all var(--transition-smooth) !important;
 }
 
 .flow-step-item:hover .flow-step-number {
-    background-color: var(--accent-primary);
-    color: #FFFFFF;
-    border-color: transparent;
-    box-shadow: 0 4px 10px var(--accent-glow);
+    background-color: var(--accent-primary) !important;
+    /* Swaps to active Wofi brand color! */
+    color: #000000 !important;
+    /* bold contrast black text */
+    border-color: transparent !important;
+    box-shadow: 0 0 15px var(--accent-primary) !important;
+    /* brilliant glow */
+    transform: scale(1.1) rotate(360deg) !important;
+    /* engaging micro-rotation and scale! */
 }
 
 .flow-step-title {
-    font-size: 14.5px;
-    font-weight: 700;
-    color: var(--text-primary);
+    font-family: var(--font-heading) !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    color: #FFFFFF !important;
+    transition: color var(--transition-fast) !important;
+}
+
+.flow-step-item:hover .flow-step-title {
+    color: var(--accent-secondary) !important;
+    /* Highlights with Gold/Yellow! */
 }
 
 .flow-step-desc {
-    font-size: 12.5px;
-    color: var(--text-secondary);
-    line-height: 1.5;
+    font-size: 12.5px !important;
+    color: #A4A4A4 !important;
+    line-height: 1.6 !important;
 }
 
 /* Stepper connectors for large screens */
@@ -2093,4 +2123,475 @@ body.light-mode .structure-metrics {
 
 .nav-item:hover .nav-title-main {
     color: var(--text-primary);
+}
+
+/* ==========================================================================
+   Wofi Premium Theme Overrides (CSS Only) - Wofi Design Direction Specifications
+   ========================================================================== */
+
+/* Pitch-black Base Background Overrides */
+html,
+body {
+    background-color: #000000 !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 500 !important;
+    /* Medium */
+    font-size: 16px !important;
+    color: #A4A4A4 !important;
+    /* Body Fill */
+}
+
+/* Typography Specifications: Pluto Sans & Montserrat */
+h1,
+.header-title h1 {
+    font-family: 'Pluto Sans', 'Outfit', sans-serif !important;
+    font-weight: 500 !important;
+    /* Pluto Sans Medium */
+    font-size: 70px !important;
+    /* Heading Type 70px */
+    line-height: 1.15 !important;
+    letter-spacing: -1.5px !important;
+    background: linear-gradient(90deg, #1068B2 0%, #FFCB05 100%) !important;
+    /* Heading Gradient sideways linear */
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+h2,
+.header-title-group h2,
+.card-header-simple h2 {
+    font-family: 'Pluto Sans', 'Outfit', sans-serif !important;
+    font-weight: 400 !important;
+    /* Pluto Sans Regular */
+    font-size: 40px !important;
+    /* H2 40px */
+    line-height: 1.25 !important;
+    letter-spacing: -0.5px !important;
+    color: #FFFFFF !important;
+}
+
+h3,
+.flow-step-title,
+.modal-container h3,
+.brand-name {
+    font-family: 'Pluto Sans', 'Outfit', sans-serif !important;
+}
+
+/* Force Montserrat Body Medium 16px & Fill #A4A4A4 across all content & form controls */
+.subtitle,
+.card-desc,
+.detail-value,
+p,
+li,
+td,
+th,
+input,
+select,
+textarea,
+label {
+    font-family: 'Montserrat', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    /* Montserrat Medium 16px */
+    color: #A4A4A4 !important;
+}
+
+/* Buttons and inline layout adjustments */
+button,
+.btn,
+.nav-title-main {
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+/* Eyebrows and Badges styling spec */
+.mode-badge,
+.structure-badge,
+.readonly-badge,
+.rate-daily-badge {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 500 !important;
+    /* Montserrat Medium */
+    font-size: 16px !important;
+    /* 16px Eyebrow */
+    color: #FFCB05 !important;
+    /* Fill #FFCB05 */
+    border: 1px solid rgba(255, 203, 5, 0.3) !important;
+    background-color: rgba(255, 203, 5, 0.05) !important;
+    border-radius: 30px !important;
+    padding: 4px 14px !important;
+    text-transform: uppercase !important;
+}
+
+body.mode-dbid .mode-badge,
+body.mode-dbid .structure-badge {
+    color: #1068B2 !important;
+    /* Fill #1068B2 */
+    border-color: rgba(16, 104, 178, 0.3) !important;
+    background-color: rgba(16, 104, 178, 0.05) !important;
+}
+
+/* Responsive query for very large headers on smaller screen widths */
+@media (max-width: 1024px) {
+
+    h1,
+    .header-title h1 {
+        font-size: 44px !important;
+    }
+
+    h2,
+    .header-title-group h2,
+    .card-header-simple h2 {
+        font-size: 28px !important;
+    }
+}
+
+/* Rebranding LendFlow to Wofi purely via CSS using Heading Gradient linear sideways */
+.brand-name {
+    font-size: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+}
+
+.brand-name::before {
+    content: "Wofi" !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    background: linear-gradient(90deg, #1068B2 0%, #FFCB05 100%) !important;
+    /* linear sideways */
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    font-family: 'Pluto Sans', 'Outfit', sans-serif !important;
+    text-shadow: none !important;
+}
+
+.brand-name span {
+    display: none !important;
+}
+
+/* Premium Radial Glows Configuration (#1068B2 and #FFCB05 to #000000 30% Opacity) */
+.bg-glow-1 {
+    top: -10% !important;
+    left: -5% !important;
+    width: 600px !important;
+    height: 600px !important;
+    background: radial-gradient(circle, #FFCB05 0%, rgba(0, 0, 0, 0.3) 70%) !important;
+    opacity: 0.95 !important;
+    filter: blur(120px) !important;
+}
+
+.bg-glow-2 {
+    top: 20% !important;
+    right: -10% !important;
+    width: 700px !important;
+    height: 700px !important;
+    background: radial-gradient(circle, #1068B2 0%, rgba(0, 0, 0, 0.3) 70%) !important;
+    opacity: 0.95 !important;
+    filter: blur(120px) !important;
+}
+
+/* Glassmorphism Translucent Charcoal Cards (Fill: #171717, Stroke: #ACACAC 20%) */
+.sidebar {
+    background-color: rgba(6, 6, 6, 0.92) !important;
+    border-right: 1px solid rgba(172, 172, 172, 0.20) !important;
+}
+
+.grid-card {
+    background-color: #171717 !important;
+    /* Fill #171717 */
+    border: 1px solid rgba(172, 172, 172, 0.20) !important;
+    /* Stroke #ACACAC 20% */
+    border-radius: var(--border-radius-lg) !important;
+    backdrop-filter: blur(16px) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.grid-card:hover {
+    border-color: rgba(172, 172, 172, 0.35) !important;
+}
+
+/* Selector mode boxes active status styling */
+.mode-box {
+    background-color: rgba(6, 6, 6, 0.4) !important;
+    border: 1px solid rgba(172, 172, 172, 0.20) !important;
+    border-radius: var(--border-radius-lg) !important;
+}
+
+.mode-box.active {
+    background-color: rgba(16, 104, 178, 0.05) !important;
+    border-color: var(--accent-primary) !important;
+    box-shadow: 0 0 30px rgba(16, 104, 178, 0.15) !important;
+}
+
+/* Custom mode badge styling matching the Image One button (Solid Yellow, Black Text, Yellow Glow for selected/active badges) */
+.mode-box.active .mode-badge,
+.structure-badge {
+    background: #FFCB05 !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+    font-family: var(--font-heading) !important;
+    font-size: 14px !important;
+    border-radius: 30px !important;
+    border: none !important;
+    box-shadow: 0 0 20px #FFCB05 !important;
+    /* Bg Glow - #FFCB05 (Layer Blur - 30 equivalent for badge size) */
+    text-transform: uppercase !important;
+    padding: 6px 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    letter-spacing: 0.5px !important;
+    opacity: 1 !important;
+}
+
+/* Unselected inactive mode badge styling: Glass Yellow Outline, No Glow shadow */
+.mode-box:not(.active) .mode-badge {
+    background: #211C0B !important;
+    border: 0.5px solid rgba(255, 203, 5, 0.4) !important;
+    color: #FFCB05 !important;
+    box-shadow: none !important;
+    font-weight: 800 !important;
+    font-family: var(--font-heading) !important;
+    font-size: 14px !important;
+    border-radius: 30px !important;
+    text-transform: uppercase !important;
+    padding: 5px 15px !important;
+    /* accounting for border offset */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    letter-spacing: 0.5px !important;
+    opacity: 0.75 !important;
+    /* Beautifully dim unselected badge for clarity */
+}
+
+/* Explicit overrides to prevent other theme selectors from changing it */
+body.mode-dbid .mode-box.active .mode-badge,
+body.mode-pid .mode-box.active .mode-badge,
+body.mode-dbtl .mode-box.active .mode-badge,
+body.mode-dbid .structure-badge,
+body.mode-pid .structure-badge,
+body.mode-dbtl .structure-badge {
+    background: #FFCB05 !important;
+    color: #000000 !important;
+    box-shadow: 0 0 20px #FFCB05 !important;
+    border: none !important;
+}
+
+body.mode-dbid .mode-box:not(.active) .mode-badge,
+body.mode-pid .mode-box:not(.active) .mode-badge,
+body.mode-dbtl .mode-box:not(.active) .mode-badge {
+    background: #211C0B !important;
+    border: 0.5px solid rgba(255, 203, 5, 0.4) !important;
+    color: #FFCB05 !important;
+    box-shadow: none !important;
+}
+
+/* Active Nav Menu Item Blue Glow */
+.nav-item.active {
+    background-color: rgba(16, 104, 178, 0.08) !important;
+    border-color: rgba(16, 104, 178, 0.15) !important;
+    box-shadow: inset 0 0 15px rgba(16, 104, 178, 0.08) !important;
+    color: #FFFFFF !important;
+}
+
+.nav-item.active .nav-icon {
+    color: var(--accent-primary) !important;
+    filter: drop-shadow(0 0 8px rgba(16, 104, 178, 0.5));
+}
+
+.nav-item.active .nav-title-main {
+    color: #FFFFFF !important;
+}
+
+/* CTAs styling specification: Yellow CTAs, Blue CTAs with blurs, and Outline buttons */
+
+/* Yellow CTAs (Fill: #FFCB05, Bg Glow: Layer Blur 30) */
+body.mode-dbtl .btn-primary {
+    background: #FFCB05 !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
+    border-radius: 30px !important;
+    border: none !important;
+    box-shadow: 0 0 30px #FFCB05 !important;
+    /* Layer Blur 30px */
+    letter-spacing: 0.3px;
+    transition: all var(--transition-fast) !important;
+}
+
+body.mode-dbtl .btn-primary:hover {
+    box-shadow: 0 0 45px #FFCB05 !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Blue CTAs (Fill: #1068B2, Bg Glow: Layer Blur 30) */
+body.mode-dbid .btn-primary,
+body.mode-pid .btn-primary {
+    background: #1068B2 !important;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    border-radius: 30px !important;
+    border: none !important;
+    box-shadow: 0 0 30px #1068B2 !important;
+    /* Layer Blur 30px */
+    letter-spacing: 0.3px;
+    transition: all var(--transition-fast) !important;
+}
+
+body.mode-dbid .btn-primary:hover,
+body.mode-pid .btn-primary:hover {
+    background: #FFCB05 !important;
+    color: #000000 !important;
+    box-shadow: 0 0 30px #FFCB05 !important;
+    /* Yellow CTAs Bg Glow - #FFCB05 (Layer Blur - 30) */
+    transform: translateY(-2px) !important;
+}
+
+body.mode-dbid .btn-primary:hover svg,
+body.mode-pid .btn-primary:hover svg {
+    stroke: #000000 !important;
+}
+
+/* Glass yellow outline buttons (Fill: #211C0B, Stroke: #FFCB05 0.5px) */
+.btn-secondary,
+.theme-toggle,
+.expand-toggle-btn {
+    background-color: #211C0B !important;
+    /* Fill #211C0B */
+    border: 0.5px solid #FFCB05 !important;
+    /* Stroke #FFCB05 0.5px */
+    color: #FFCB05 !important;
+    border-radius: 30px !important;
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 500 !important;
+    box-shadow: 0 4px 15px rgba(255, 203, 5, 0.15) !important;
+}
+
+.btn-secondary:hover,
+.theme-toggle:hover {
+    background-color: rgba(255, 203, 5, 0.15) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Graphic Elements spec - Gradient #171717 to #FFCB05 at 5% opacity */
+.ratio-bar-track {
+    background: linear-gradient(90deg, #171717 0%, rgba(255, 203, 5, 0.05) 100%) !important;
+    /* Graphic spec */
+    border: 1px solid rgba(172, 172, 172, 0.10) !important;
+    border-radius: 4px !important;
+}
+
+/* System Icon colors spec (#FFCB05 and #1068B2) */
+.nav-icon svg,
+.card-icon-container svg {
+    stroke: #1068B2 !important;
+    /* Blue icon */
+}
+
+body.mode-dbtl .card-icon-container svg {
+    stroke: #FFCB05 !important;
+    /* Yellow icon */
+}
+
+.limit-alert-icon {
+    color: #FFCB05 !important;
+}
+
+/* Custom Gold Benefit Pills on existing limit alert elements */
+.limit-alert-box {
+    border-left-color: #FFCB05 !important;
+    background-color: rgba(255, 203, 5, 0.03) !important;
+    border: 1px solid rgba(255, 203, 5, 0.1) !important;
+    border-left: 3px solid #FFCB05 !important;
+    border-radius: var(--border-radius-md) !important;
+}
+
+/* Input Fields styling refinement */
+.form-control {
+    background-color: rgba(5, 5, 5, 0.8) !important;
+    border: 1px solid rgba(172, 172, 172, 0.20) !important;
+}
+
+.form-control:focus {
+    border-color: #FFCB05 !important;
+    box-shadow: 0 0 15px rgba(255, 203, 5, 0.2) !important;
+    background-color: rgba(0, 0, 0, 0.95) !important;
+}
+
+/* Slider Controls thumb overrides */
+.styled-slider::-webkit-slider-thumb {
+    background: #FFCB05 !important;
+    box-shadow: 0 0 12px rgba(255, 203, 5, 0.5) !important;
+}
+
+.styled-slider::-moz-range-thumb {
+    background: #FFCB05 !important;
+    box-shadow: 0 0 12px rgba(255, 203, 5, 0.5) !important;
+}
+
+/* Ratio Bar Colors */
+.ratio-bar-fill.principal-fill {
+    background-color: #1068B2 !important; /* Premium Wofi Blue for Principal Amount */
+    box-shadow: 0 0 12px rgba(16, 104, 178, 0.6) !important;
+}
+
+.ratio-bar-fill.interest-fill {
+    background-color: #FFCB05 !important; /* Premium Wofi Yellow for Interest/Cost Amount */
+    box-shadow: 0 0 12px rgba(255, 203, 5, 0.6) !important;
+}
+
+/* Overdue Penalty breakdown card overrides */
+.overdue-breakdown-box {
+    background: rgba(239, 68, 68, 0.04) !important;
+    border: 1px solid rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Milestone Timeline step passed */
+.timeline-step.passed .step-dot {
+    background-color: var(--accent-primary) !important;
+    box-shadow: 0 0 12px rgba(16, 104, 178, 0.4) !important;
+}
+
+.timeline-step.passed .step-label {
+    color: var(--accent-primary) !important;
+}
+
+.timeline-step.current .step-dot {
+    border-color: #FFCB05 !important;
+    box-shadow: 0 0 15px rgba(255, 203, 5, 0.6) !important;
+}
+
+.timeline-step.current .step-label {
+    color: #FFCB05 !important;
+}
+
+.step-day-count {
+    background-color: #FFCB05 !important;
+    box-shadow: 0 4px 10px rgba(255, 203, 5, 0.25) !important;
+    color: #000000 !important;
+    font-weight: 800 !important;
+}
+
+/* Modal future pages locked illustrations */
+.lock-sphere {
+    background-color: rgba(255, 203, 5, 0.06) !important;
+    border-color: #FFCB05 !important;
+    box-shadow: 0 0 35px rgba(255, 203, 5, 0.25) !important;
+    color: #FFCB05 !important;
+}
+
+/* Glass Card styling for Chart Section (Fill: #171717, Stroke: #ACACAC 20% Opacity) */
+.chart-section {
+    background-color: #171717 !important;
+    /* Fill #171717 */
+    border: 1px solid rgba(172, 172, 172, 0.20) !important;
+    /* Stroke #ACACAC 20% */
+    border-radius: var(--border-radius-lg) !important;
+    padding: 24px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    backdrop-filter: blur(16px) !important;
+}
+
+/* Remove proceed/acknowledge button from all pages */
+#proceed-button {
+    display: none !important;
 }

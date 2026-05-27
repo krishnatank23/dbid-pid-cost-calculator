@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyRateDisplay = document.getElementById('daily-rate-display');
     const inclusiveDaysCheckbox = document.getElementById('inclusive-days');
 
-    
+
     // Outputs
     const totalToPayDisplay = document.getElementById('total-to-pay-display');
     const principalSubtext = document.getElementById('principal-subtext');
@@ -40,19 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratioBarPrincipal = document.querySelector('.ratio-bar-fill.principal-fill');
     const ratioBarInterest = document.querySelector('.ratio-bar-fill.interest-fill');
     const ratioLabels = document.querySelector('.ratio-labels');
-    
+
     // Timelines
     const timelineLoanDate = document.getElementById('timeline-loan-date');
     const timelineRepaymentDate = document.getElementById('timeline-repayment-date');
     const timelineDueDate = document.getElementById('timeline-due-date');
     const timelineElapsedDays = document.getElementById('timeline-elapsed-days');
     const timelineRepaymentStep = timelineRepaymentDate.closest('.timeline-step');
-    
+
     // Formatted Dates Displays
     const loanDateFormatted = document.getElementById('loan-date-formatted');
     const dueDateFormatted = document.getElementById('due-date-formatted');
     const repaymentDateFormatted = document.getElementById('repayment-date-formatted');
-    
+
     // Text Labels & Flow
     const proceedModeBadge = document.getElementById('proceed-mode-badge');
     const flowStructureLabel = document.getElementById('flow-structure-type-label');
@@ -63,11 +63,71 @@ document.addEventListener('DOMContentLoaded', () => {
     const tenureValidationMsg = document.getElementById('tenure-validation-msg');
     const repaymentValidationMsg = document.getElementById('repayment-validation-msg');
     const overdueBreakdownBox = document.getElementById('overdue-breakdown-box');
-    
+
     // Modals
     const lockedPageModal = document.getElementById('locked-page-modal');
     const modalPageTitle = document.getElementById('modal-page-title');
     const toastContainer = document.getElementById('toast-container');
+
+    // ── Chart.js Doughnut Chart Setup ──
+    let breakupChart = null;
+    const breakupChartCanvas = document.getElementById('breakupChart');
+    if (breakupChartCanvas) {
+        const chartCtx = breakupChartCanvas.getContext('2d');
+        // Read CSS variables for theme-aware colors
+        const computedStyle = getComputedStyle(document.documentElement);
+        const accentPrimary = computedStyle.getPropertyValue('--accent-primary').trim() || '#1068B2';
+        const accentSecondary = computedStyle.getPropertyValue('--accent-secondary').trim() || '#FFCB05';
+        
+        breakupChart = new Chart(chartCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Principal Amount', 'Total Interest'],
+                datasets: [{
+                    data: [97.5, 2.5],
+                    backgroundColor: [accentPrimary, accentSecondary],
+                    borderWidth: 0,
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                cutout: '60%',
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 18, 28, 0.9)',
+                        titleFont: { family: 'Outfit', weight: '700', size: 13 },
+                        bodyFont: { family: 'Plus Jakarta Sans', size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function (context) {
+                                return ` ${context.label}: ${context.parsed.toFixed(1)}%`;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateRotate: true,
+                    duration: 600
+                }
+            }
+        });
+    }
+
+    function updateBreakupChart(principalPct, interestPct) {
+        if (!breakupChart) return;
+        breakupChart.data.datasets[0].data = [principalPct, interestPct];
+        // Re-read CSS vars in case theme changed
+        const cs = getComputedStyle(document.documentElement);
+        breakupChart.data.datasets[0].backgroundColor = [
+            cs.getPropertyValue('--accent-primary').trim() || '#1068B2',
+            cs.getPropertyValue('--accent-secondary').trim() || '#FFCB05'
+        ];
+        breakupChart.update();
+    }
 
     // Current Time Setup (Dynamic System Time & Day)
     const initDate = new Date();
@@ -169,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function runCalculations() {
         // 1. Validate Inputs first
         let hasErrors = false;
-        
+
         // Amount check
         if (state.loanAmount < state.minLimit) {
             amountValidationMsg.textContent = `Minimum limit is ₹${state.minLimit.toLocaleString('en-IN')}`;
@@ -187,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             amountValidationMsg.textContent = '';
             loanAmountInput.parentElement.classList.remove('error');
         }
-        
+
         // Tenure check
         if (state.tenureDays < 30 || state.tenureDays > 60) {
             tenureValidationMsg.textContent = 'Tenure days should be between 30 to 60';
@@ -199,11 +259,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const loanDate = parseUTCDate(state.loanDateStr);
-        
+
         // 2. Compute Due Date = LoanDate + Tenure - 1 (inclusive of LoanDate)
         const dueDateTime = loanDate.getTime() + (state.tenureDays - 1) * 24 * 60 * 60 * 1000;
         const dueDate = new Date(dueDateTime);
-        
+
         // Sync Due Date to UI
         dueDateInputVal.value = formatDateLong(dueDate);
         if (dueDateFormatted) {
@@ -213,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 3. Parse and Validate Repayment Date
         const repaymentDate = parseUTCDate(state.repaymentDateStr);
-        
+
         if (repaymentDate.getTime() <= loanDate.getTime()) {
             repaymentValidationMsg.textContent = `Select valid date or date after loan date`;
             repaymentDateInput.parentElement.classList.add('error');
@@ -236,21 +296,21 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate Days between Loan Date and Repayment Date
         const diffTime = repaymentDate.getTime() - loanDate.getTime();
         let daysCount = Math.round(diffTime / (1000 * 60 * 60 * 24));
-        
+
         if (state.isInclusiveDays) {
             daysCount += 1;
         }
-        
+
         // Handle negative days boundary case
         if (daysCount < 0) daysCount = 0;
 
         // 4. Compute Interest Dues
         const dailyRatePercent = state.interestRateAnnual / 365;
-        
+
         let interestAmount = 0;
         let normalDays = daysCount;
         let extraDays = 0;
-        
+
         // Split-interest calculation: normal rate up to due date, double rate for extra days past due date
         const repaymentDateCopy = new Date(Date.UTC(repaymentDate.getUTCFullYear(), repaymentDate.getUTCMonth(), repaymentDate.getUTCDate()));
         const dueDateCopy = new Date(Date.UTC(dueDate.getUTCFullYear(), dueDate.getUTCMonth(), dueDate.getUTCDate()));
@@ -259,7 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
             extraDays = Math.round((repaymentDateCopy.getTime() - dueDateCopy.getTime()) / (24 * 60 * 60 * 1000));
             normalDays = daysCount - extraDays;
             if (normalDays < 0) normalDays = 0;
-            
+
             const normalInterest = state.loanAmount * (dailyRatePercent / 100) * normalDays;
             const extraInterest = state.loanAmount * ((dailyRatePercent * 2) / 100) * extraDays;
             interestAmount = normalInterest + extraInterest;
@@ -268,19 +328,19 @@ document.addEventListener('DOMContentLoaded', () => {
             normalDays = daysCount;
             interestAmount = state.loanAmount * (dailyRatePercent / 100) * daysCount;
         }
-        
+
         const totalToPay = state.loanAmount + interestAmount;
 
         // 5. Update Result Displays
         daysCountDisplay.innerHTML = `${daysCount.toFixed(2)} <span class="metric-unit">Days</span>`;
         interestToPayDisplay.textContent = formatCurrency(interestAmount);
         totalToPayDisplay.textContent = formatCurrency(totalToPay);
-        
+
         principalSubtext.textContent = formatCurrency(state.loanAmount);
-        
+
         if (extraDays > 0) {
             interestSubtext.innerHTML = `${formatCurrency(interestAmount)} <span class="overdue-penalty-indicator" style="color: var(--danger); font-size: 11px; font-weight: 700; margin-left: 4px;">(includes ${extraDays} extra days at 2x rate)</span>`;
-            
+
             // Inject overdue warning breakdown details
             if (overdueBreakdownBox) {
                 overdueBreakdownBox.style.display = 'block';
@@ -341,13 +401,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update Ratio Progress Bar
         const principalPct = totalToPay > 0 ? (state.loanAmount / totalToPay) * 100 : 100;
         const interestPct = totalToPay > 0 ? (interestAmount / totalToPay) * 100 : 0;
-        
+
         ratioBarPrincipal.style.width = `${principalPct}%`;
         ratioBarInterest.style.width = `${interestPct}%`;
         ratioLabels.innerHTML = `
             <span>Principal (${principalPct.toFixed(1)}%)</span>
             <span>Interest (${interestPct.toFixed(1)}%)</span>
         `;
+
+        // Update Breakup Doughnut Chart
+        updateBreakupChart(principalPct, interestPct);
     }
 
     /* ==========================================================================
@@ -356,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderFlowSteps() {
         const steps = flows[state.mode];
         flowStepsWrapper.innerHTML = '';
-        
+
         steps.forEach((step, idx) => {
             const stepHtml = `
                 <div class="flow-step-item" style="animation: fadeInUp 0.4s ease-out ${idx * 0.1}s forwards; opacity: 0; transform: translateY(15px);">
@@ -379,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        Event Listeners & Form Control Bindings
        ========================================================================== */
-    
+
     // Loan Amount Inputs Binding (Text Box & Slider Dual-Sync)
     loanAmountInput.addEventListener('focus', () => {
         const raw = parseInputNumber(loanAmountInput.value);
@@ -388,14 +451,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loanAmountInput.addEventListener('blur', () => {
         let raw = parseInputNumber(loanAmountInput.value);
-        
+
         if (raw < state.minLimit) raw = state.minLimit;
         if (raw > state.maxLimit) raw = state.maxLimit;
-        
+
         state.loanAmount = raw;
         loanAmountInput.value = raw.toLocaleString('en-IN');
         loanAmountSlider.value = raw;
-        
+
         runCalculations();
     });
 
@@ -435,7 +498,7 @@ document.addEventListener('DOMContentLoaded', () => {
             runCalculations();
             return;
         }
-        
+
         // Only clamp on input if the user has typed at least a 2-digit whole number
         if (rawVal.trim().length >= 2) {
             if (val < 30) {
@@ -448,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('Tenure Limit', 'Tenure days should be between 30 to 60.');
             }
         }
-        
+
         state.tenureDays = val;
         runCalculations();
     });
@@ -498,7 +561,7 @@ document.addEventListener('DOMContentLoaded', () => {
     themeBtn.addEventListener('click', () => {
         body.classList.toggle('light-mode');
         const isLight = body.classList.contains('light-mode');
-        
+
         if (isLight) {
             localStorage.setItem('theme', 'light');
             sunIcon.style.display = 'none';
@@ -516,27 +579,27 @@ document.addEventListener('DOMContentLoaded', () => {
        Locked Pages Handler (For Phase 2, 3, 4)
        ========================================================================== */
     const lockedNavs = document.querySelectorAll('.locked-nav');
-    
+
     lockedNavs.forEach(nav => {
         nav.addEventListener('click', (e) => {
             e.preventDefault();
             const pageLabel = nav.querySelector('.nav-label').textContent;
-            
+
             modalPageTitle.textContent = pageLabel;
-            
+
             let pageDesc = "";
             if (nav.id === 'nav-page-3') {
                 pageDesc = "Our proprietary risk assessment protocol. Evaluate credit ratings, historical payment patterns, cash coverage ratio, and fraud factors to approve Term Loans in real-time.";
             } else {
                 pageDesc = "Automated settlements gateway. Direct payment APIs, partial repayments handling, interest adjustments, and deep-link accounting reconciliation workflows.";
             }
-            
+
             lockedPageModal.querySelector('.modal-description').textContent = pageDesc;
             lockedPageModal.classList.add('active');
         });
     });
 
-    window.closeLockedModal = function() {
+    window.closeLockedModal = function () {
         lockedPageModal.classList.remove('active');
     };
 
@@ -551,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        Expand/Collapse Advanced Settings Panel
        ========================================================================== */
-    window.toggleAdvancedSettings = function() {
+    window.toggleAdvancedSettings = function () {
         advancedSettingsToggle.classList.toggle('expanded');
     };
 
@@ -579,10 +642,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-        
+
         toastContainer.insertAdjacentHTML('beforeend', toastHtml);
         const toastEl = document.getElementById(id);
-        
+
         // Auto-remove after 4 seconds
         setTimeout(() => {
             toastEl.style.opacity = '0';
@@ -596,9 +659,9 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        Proceed Action Trigger
        ========================================================================== */
-    window.handleProceedAction = function() {
+    window.handleProceedAction = function () {
         showToast(
-            'Application Initiated', 
+            'Application Initiated',
             `Page 2 Data Saved! Setting up credit checks for your SCF application.`
         );
     };
@@ -624,22 +687,22 @@ document.addEventListener('DOMContentLoaded', () => {
     loanDateInput.value = state.loanDateStr;
     loanTenureInput.value = state.tenureDays;
     repaymentDateInput.value = state.repaymentDateStr;
-    
+
     // Set custom bounds displays
     minLimitDisplay.textContent = '₹1,00,000';
     maxLimitDisplay.textContent = '₹2,00,00,000';
     loanAmountSlider.min = 100000;
     loanAmountSlider.max = 20000000;
-    
+
     // Set active badges
     proceedModeBadge.textContent = 'SCF';
     flowStructureLabel.textContent = 'SCF';
-    
+
     const dateL = parseUTCDate(state.loanDateStr);
     const dateR = parseUTCDate(state.repaymentDateStr);
     if (loanDateFormatted) loanDateFormatted.textContent = formatDateLong(dateL);
     if (repaymentDateFormatted) repaymentDateFormatted.textContent = formatDateLong(dateR);
-    
+
     renderFlowSteps();
     runCalculations();
 });

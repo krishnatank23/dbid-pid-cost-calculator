@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalPageTitle = document.getElementById('modal-page-title');
     const toastContainer = document.getElementById('toast-container');
 
+    // Operational Flow Container
+    const flowStepsWrapper = document.getElementById('flow-steps-wrapper');
+    const flowStructureLabel = document.getElementById('flow-structure-type-label');
+
     // Current Time Setup (Dynamic System Time & Day)
     const initDate = new Date();
     document.getElementById('current-time-display').innerHTML = formatDateWithDay(initDate);
@@ -399,6 +403,60 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /* ==========================================================================
+       Operational Flow Configuration
+       ========================================================================== */
+    const flows = {
+        dbtl: [
+            {
+                number: '01',
+                title: 'Loan Appraisal',
+                desc: 'Distributor submits corporate profiles and business ledgers to LendFlow to evaluate overall credit risk.'
+            },
+            {
+                number: '02',
+                title: 'Custom Terms Set',
+                desc: 'LendFlow configures terms, processing fees (0.50%), and the exact monthly EMI date.'
+            },
+            {
+                number: '03',
+                title: 'Funds Disbursed',
+                desc: 'The approved principal amount is disbursed directly into the Distributor\'s account within hours.'
+            },
+            {
+                number: '04',
+                title: 'Monthly EMI Repayments',
+                desc: 'Distributor repays the amortized term loan via structured monthly EMIs (Principal + Interest).'
+            }
+        ]
+    };
+
+    /* ==========================================================================
+       Render Transaction Steps Dynamic UI
+       ========================================================================== */
+    function renderFlowSteps() {
+        const steps = flows.dbtl;
+        flowStepsWrapper.innerHTML = '';
+
+        steps.forEach((step, idx) => {
+            const stepHtml = `
+                <div class="flow-step-item" style="animation: fadeInUp 0.4s ease-out ${idx * 0.1}s forwards; opacity: 0; transform: translateY(15px);">
+                    <span class="flow-step-number">${step.number}</span>
+                    <h3 class="flow-step-title">${step.title}</h3>
+                    <p class="flow-step-desc">${step.desc}</p>
+                </div>
+            `;
+            flowStepsWrapper.insertAdjacentHTML('beforeend', stepHtml);
+        });
+
+        // Trigger animation
+        const animatedItems = flowStepsWrapper.querySelectorAll('.flow-step-item');
+        animatedItems.forEach(el => {
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        });
+    }
+
+    /* ==========================================================================
        Initialization
        ========================================================================== */
     // Apply persistent theme from localStorage on page load
@@ -422,5 +480,6 @@ document.addEventListener('DOMContentLoaded', () => {
     interestRateInput.value = state.roiAnnual.toFixed(2);
     processingFeePctInput.value = state.processingFeePct.toFixed(2);
 
+    renderFlowSteps();
     runCalculations();
 });

@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const computedStyle = getComputedStyle(document.documentElement);
         const accentPrimary = computedStyle.getPropertyValue('--accent-primary').trim() || '#1169B2';
         const accentSecondary = computedStyle.getPropertyValue('--accent-secondary').trim() || '#FFCE07';
-        
+
         breakupChart = new Chart(chartCtx, {
             type: 'doughnut',
             data: {
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         padding: 12,
                         cornerRadius: 8,
                         callbacks: {
-                            label: function(context) {
+                            label: function (context) {
                                 return ` ${context.label}: ${context.parsed.toFixed(1)}%`;
                             }
                         }
