@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 number: '02',
                 title: 'Invoice Authenticated',
-                desc: 'Wofi dynamically verifies the retailer sale invoices. No heavy collaterals required.'
+                desc: 'Wofi dynamically verifies the retailer sale invoices.'
             },
             {
                 number: '03',
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
         principalSubtext.textContent = formatCurrency(state.loanAmount);
 
         if (extraDays > 0) {
-            interestSubtext.innerHTML = `${formatCurrency(interestAmount)} <span class="overdue-penalty-indicator" style="color: var(--danger); font-size: 11px; font-weight: 700; margin-left: 4px;">(includes ${extraDays} extra days at 2x rate)</span>`;
+            interestSubtext.innerHTML = `${formatCurrency(interestAmount)} <span class="overdue-penalty-indicator" style="color: var(--danger); font-size: 11px; font-weight: 700; margin-left: 4px;">(includes ${extraDays} extra days at overdue rate)</span>`;
 
             // Inject beautiful overdue warning and split breakdown details
             if (overdueBreakdownBox) {
@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="overdue-row penalty-highlight">
                             <div class="label">
-                                <span>Delayed Period Interest (2x Penalty)</span>
+                                <span>Delayed Period Interest (Overdue)</span>
                                 <span class="sub-label">${extraDays} Days @ ${(state.interestRateAnnual * 2).toFixed(2)}% p.a. (0.10%/day)</span>
                             </div>
                             <span class="val">${formatCurrency(state.loanAmount * ((dailyRatePercent * 2) / 100) * extraDays)}</span>

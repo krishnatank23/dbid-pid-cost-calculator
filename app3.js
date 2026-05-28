@@ -441,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 number: '02',
-                title: 'Custom Terms Set',
+                title: 'Set Custom Terms',
                 desc: 'Wofi configures terms and the exact monthly EMI date.'
             },
             {
@@ -451,7 +451,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             {
                 number: '04',
-                title: 'Monthly EMI Repayments',
+                title: 'Repayment Monthly EMI',
                 desc: 'Distributor repays the amortized term loan via structured monthly EMIs (Principal + Interest).'
             }
         ]
