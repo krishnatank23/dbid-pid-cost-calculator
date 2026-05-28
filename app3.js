@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LendFlow - Distributor Term Loan (DBTL) Calculator Core Script
+   Wofi - Distributor Term Loan (DBTL) Calculator Core Script
    (app3.js)
    ========================================================================== */
 
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const day = String(d.getUTCDate()).padStart(2, '0');
         const month = String(d.getUTCMonth() + 1).padStart(2, '0');
         const year = d.getUTCFullYear();
-        return `${day}/${month}/${year}`;
+        return `${day}-${month}-${year}`;
     }
 
     function formatDateLong(date) {
@@ -182,12 +182,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const principalPct = (state.loanAmount / totalCostSum) * 100;
         const costPct = ((totalInterest + pfTotal) / totalCostSum) * 100;
 
-        ratioBarPrincipal.style.width = `${principalPct}%`;
-        ratioBarCost.style.width = `${costPct}%`;
-        document.querySelector('.ratio-labels').innerHTML = `
-            <span>Principal (${principalPct.toFixed(1)}%)</span>
-            <span>Total Cost (${costPct.toFixed(1)}%)</span>
-        `;
+        if (ratioBarPrincipal && ratioBarCost) {
+            ratioBarPrincipal.style.width = `${principalPct}%`;
+            ratioBarCost.style.width = `${costPct}%`;
+            const labels = document.querySelector('.ratio-labels');
+            if (labels) {
+                labels.innerHTML = `
+                    <span>Principal (${principalPct.toFixed(1)}%)</span>
+                    <span>Total Cost (${costPct.toFixed(1)}%)</span>
+                `;
+            }
+        }
 
         // 5. Populate Detailed Repayment Schedule Table
         repaymentScheduleBody.innerHTML = '';
@@ -302,13 +307,12 @@ document.addEventListener('DOMContentLoaded', () => {
         runCalculations();
     });
 
-    loanTenureInput.addEventListener('input', (e) => {
+    loanTenureInput.addEventListener('change', (e) => {
         let val = parseInt(e.target.value);
-        if (isNaN(val) || val < 1) val = 1;
-        if (val > 60) {
-            val = 60;
-            loanTenureInput.value = 60;
-            showToast('Tenure Cap', 'Maximum term tenure is capped at 60 months.');
+        if (val !== 3 && val !== 6) {
+            val = 6;
+            loanTenureInput.value = "6";
+            showToast('Invalid Tenure', 'Only 3 or 6 months tenure is allowed.');
         }
         state.tenureMonths = val;
         runCalculations();
@@ -410,12 +414,12 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 number: '01',
                 title: 'Loan Appraisal',
-                desc: 'Distributor submits corporate profiles and business ledgers to LendFlow to evaluate overall credit risk.'
+                desc: 'Distributor submits corporate profiles and business ledgers to Wofi to evaluate overall credit risk.'
             },
             {
                 number: '02',
                 title: 'Custom Terms Set',
-                desc: 'LendFlow configures terms, processing fees (0.50%), and the exact monthly EMI date.'
+                desc: 'Wofi configures terms, processing fees (0.50%), and the exact monthly EMI date.'
             },
             {
                 number: '03',

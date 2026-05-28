@@ -1,5 +1,5 @@
 /* ==========================================================================
-   LendFlow - Premium Invoice Discounting Platform Core Script
+   Wofi - Premium Invoice Discounting Platform Core Script
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -70,65 +70,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalPageTitle = document.getElementById('modal-page-title');
     const toastContainer = document.getElementById('toast-container');
 
-    // ── Chart.js Doughnut Chart Setup ──
-    let breakupChart = null;
-    const breakupChartCanvas = document.getElementById('breakupChart');
-    if (breakupChartCanvas) {
-        const chartCtx = breakupChartCanvas.getContext('2d');
-        // Read CSS variables for theme-aware colors
-        const computedStyle = getComputedStyle(document.documentElement);
-        const accentPrimary = computedStyle.getPropertyValue('--accent-primary').trim() || '#1169B2';
-        const accentSecondary = computedStyle.getPropertyValue('--accent-secondary').trim() || '#FFCE07';
-
-        breakupChart = new Chart(chartCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Principal Amount', 'Total Interest'],
-                datasets: [{
-                    data: [97.4, 2.6],
-                    backgroundColor: [accentPrimary, accentSecondary],
-                    borderWidth: 0,
-                    hoverOffset: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                cutout: '60%',
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        backgroundColor: 'rgba(15, 18, 28, 0.9)',
-                        titleFont: { family: 'Outfit', weight: '700', size: 13 },
-                        bodyFont: { family: 'Plus Jakarta Sans', size: 12 },
-                        padding: 12,
-                        cornerRadius: 8,
-                        callbacks: {
-                            label: function (context) {
-                                return ` ${context.label}: ${context.parsed.toFixed(1)}%`;
-                            }
-                        }
-                    }
-                },
-                animation: {
-                    animateRotate: true,
-                    duration: 600
-                }
-            }
-        });
-    }
-
-    function updateBreakupChart(principalPct, interestPct) {
-        if (!breakupChart) return;
-        breakupChart.data.datasets[0].data = [principalPct, interestPct];
-        // Re-read CSS vars in case theme changed
-        const cs = getComputedStyle(document.documentElement);
-        breakupChart.data.datasets[0].backgroundColor = [
-            cs.getPropertyValue('--accent-primary').trim() || '#1169B2',
-            cs.getPropertyValue('--accent-secondary').trim() || '#FFCE07'
-        ];
-        breakupChart.update();
-    }
 
     // Current Time Setup (Dynamic System Time & Day)
     const initDate = new Date();
@@ -142,12 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 number: '01',
                 title: 'Retailer Sales Invoice',
-                desc: 'Distributor delivers goods to retailer and provides their sale invoices to the LendFlow system.'
+                desc: 'Distributor delivers goods to retailer and provides their sale invoices to the Wofi system.'
             },
             {
                 number: '02',
                 title: 'Invoice Authenticated',
-                desc: 'LendFlow dynamically verifies the retailer sale invoices. No heavy collaterals required.'
+                desc: 'Wofi dynamically verifies the retailer sale invoices. No heavy collaterals required.'
             },
             {
                 number: '03',
@@ -164,12 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 number: '01',
                 title: 'Brand Purchase Invoice',
-                desc: 'Retailer purchases brand stock and provides purchase invoices to the LendFlow platform.'
+                desc: 'Retailer purchases brand stock and provides purchase invoices to the Wofi platform.'
             },
             {
                 number: '02',
                 title: 'Invoice Authenticated',
-                desc: 'LendFlow verifies the brand supply invoice details. Quick automated risk check completed.'
+                desc: 'Wofi verifies the brand supply invoice details. Quick automated risk check completed.'
             },
             {
                 number: '03',
@@ -213,6 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function formatDateLong(date) {
         const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
         return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${date.getUTCFullYear()}`;
+    }
+
+    function formatDateDDMMYYYY(date) {
+        const d = new Date(date);
+        const day = String(d.getUTCDate()).padStart(2, '0');
+        const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const year = d.getUTCFullYear();
+        return `${day}-${month}-${year}`; // DD-MM-YYYY format
     }
 
     function formatDateWithDay(date) {
@@ -265,12 +214,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const dueDateTime = loanDate.getTime() + (state.tenureDays - 1) * 24 * 60 * 60 * 1000;
         const dueDate = new Date(dueDateTime);
 
-        // Sync Due Date to UI (formatted cleanly in the input box)
-        dueDateInputVal.value = formatDateLong(dueDate);
+        // Sync Due Date to UI (formatted cleanly in the input box in DD-MM-YYYY format)
+        dueDateInputVal.value = formatDateDDMMYYYY(dueDate);
         if (dueDateFormatted) {
-            dueDateFormatted.textContent = formatDateLong(dueDate);
+            dueDateFormatted.textContent = formatDateDDMMYYYY(dueDate);
         }
-        timelineDueDate.textContent = formatDateLong(dueDate);
+        timelineDueDate.textContent = formatDateDDMMYYYY(dueDate);
 
         // 3. Parse and Validate Repayment Date
         const repaymentDate = parseUTCDate(state.repaymentDateStr);
@@ -405,15 +354,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const principalPct = totalToPay > 0 ? (state.loanAmount / totalToPay) * 100 : 100;
         const interestPct = totalToPay > 0 ? (interestAmount / totalToPay) * 100 : 0;
 
-        ratioBarPrincipal.style.width = `${principalPct}%`;
-        ratioBarInterest.style.width = `${interestPct}%`;
-        ratioLabels.innerHTML = `
-            <span>Principal (${principalPct.toFixed(1)}%)</span>
-            <span>Interest (${interestPct.toFixed(1)}%)</span>
-        `;
+        if (ratioBarPrincipal && ratioBarInterest && ratioLabels) {
+            ratioBarPrincipal.style.width = `${principalPct}%`;
+            ratioBarInterest.style.width = `${interestPct}%`;
+            ratioLabels.innerHTML = `
+                <span>Principal (${principalPct.toFixed(1)}%)</span>
+                <span>Interest (${interestPct.toFixed(1)}%)</span>
+            `;
+        }
 
-        // Update Doughnut Chart
-        updateBreakupChart(principalPct, interestPct);
     }
 
     /* ==========================================================================

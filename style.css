@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 /* ==========================================================================
-   LendFlow - Premium Invoice Discounting Platform CSS Stylesheet
+   Wofi - Premium Invoice Discounting Platform CSS Stylesheet
    ========================================================================== */
 
 /* Design Tokens & Theme Variables */
@@ -2245,7 +2245,7 @@ body.mode-dbid .structure-badge {
     }
 }
 
-/* Rebranding LendFlow to Wofi purely via CSS using Heading Gradient linear sideways */
+/* Rebranding to Wofi purely via CSS using Heading Gradient linear sideways */
 .brand-name {
     font-size: 0 !important;
     display: inline-flex !important;

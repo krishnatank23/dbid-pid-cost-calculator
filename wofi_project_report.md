@@ -1,7 +1,7 @@
-# LendFlow | Smart Invoice Discounting Platform
+# Wofi | Smart Invoice Discounting Platform
 ## Project Report & Multi-Page Architectural Blueprint
 
-LendFlow is an advanced, high-performance, and visually stunning supply chain finance application. It facilitates frictionless invoice discounting for two major trade participants: **Distributors** and **Retailers**. 
+Wofi is an advanced, high-performance, and visually stunning supply chain finance application. It facilitates frictionless invoice discounting for two major trade participants: **Distributors** and **Retailers**. 
 
 This document provides a comprehensive analysis of the current implementation (Page 1: Dynamic Financing Calculator), presents the mathematical proof of the calculation engine, and details the future multi-page expansion roadmap.
 
@@ -9,7 +9,7 @@ This document provides a comprehensive analysis of the current implementation (P
 
 ## 1. Core Financial Concepts & Business Models
 
-LendFlow supports two distinct invoice discounting structures, tailored to the cash flow requirements of supply chain participants:
+Wofi supports two distinct invoice discounting structures, tailored to the cash flow requirements of supply chain participants:
 
 | Dimension | DBID (Distributor Brand Invoice Discounting) | PID (Purchase Invoice Discounting) |
 | :--- | :--- | :--- |
@@ -32,7 +32,7 @@ Our calculation engine matches the user's Excel spreadsheet example exactly. Bel
 *   **Repayment Date:** `07/10/2026` (Editable)
 
 ### B. Due Date Calculation
-LendFlow utilizes an **inclusive day count convention** (counting both start and end days as active financing periods).
+Wofi utilizes an **inclusive day count convention** (counting both start and end days as active financing periods).
 *   **Formula:** $\text{Due Date} = \text{Loan Date} + (\text{Tenure} - 1)\text{ Days}$
 *   **Calculation:**
     *   **May 19 to May 31:** $31 - 19 + 1 = 13\text{ Days}$
@@ -112,7 +112,7 @@ graph TD
 
 ### Page 3: Underwriting & Risk Assessment (AI Grading)
 *   **Key Objective:** Evaluate the transaction's risk profile and adjust pricing in real-time.
-*   **Proposed Visuals:** Custom gauge charts displaying the "LendFlow Score" (Risk grading from A+ to D), financial health dashboard (Debt-to-Equity, Cash Coverage, Historical Repayment Rate), and an dynamic pricing engine (e.g., lower risk score reduces the annual interest rate from 18.25% to 15.00%, dynamically recalculating Page 1 interest!).
+*   **Proposed Visuals:** Custom gauge charts displaying the "Wofi Score" (Risk grading from A+ to D), financial health dashboard (Debt-to-Equity, Cash Coverage, Historical Repayment Rate), and an dynamic pricing engine (e.g., lower risk score reduces the annual interest rate from 18.25% to 15.00%, dynamically recalculating Page 1 interest!).
 
 ### Page 4: Disbursals & Settlement Gateway (Accounting & Payments)
 *   **Key Objective:** Manage disbursements, track repayment status, and provide settlement interfaces.
@@ -123,12 +123,12 @@ graph TD
 ## 5. File Registry
 
 The following files have been initialized and verified in your workspace folder:
-1.  **HTML Entrypoint:** [index.html](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/project-rinal-2/index.html)
-2.  **Stylesheets:** [style.css](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/project-rinal-2/style.css)
-3.  **Application Logic:** [app.js](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/project-rinal-2/app.js)
-4.  **Project Documentation:** [lendflow_project_report.md](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/project-rinal-2/lendflow_project_report.md)
+1.  **HTML Entrypoint:** [index.html](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/cost-cal/index.html)
+2.  **Stylesheets:** [style.css](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/cost-cal/style.css)
+3.  **Application Logic:** [app.js](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/cost-cal/app.js)
+4.  **Project Documentation:** [wofi_project_report.md](file:///c:/Users/Krishna%20Tank/OneDrive%20-%20World%20Goods%20Market%20Limited/vscode%20backup/vs_code/cost-cal/wofi_project_report.md)
 
 > [!TIP]
-> To launch the application locally, locate the workspace folder `vs_code/project-rinal-2` and open `index.html` in your default browser. 
+> To launch the application locally, locate the workspace folder `cost-cal` and open `index.html` in your default browser. 
 > 
 > *I am ready to build Page 2, 3, or 4 whenever you are ready! Just describe your requirements, and I will immediately turn them into responsive code.*

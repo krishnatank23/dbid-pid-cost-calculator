@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LendFlow | DBTL (Distributor Term Loan)</title>
+    <title>Wofi | DBTL (Distributor Term Loan)</title>
     <meta name="description"
         content="Premium term financing platform for Distributors. Calculate processing fees, GST, total interest, and generate detailed monthly repayment schedules.">
     <!-- Google Fonts -->
@@ -43,7 +43,7 @@
                         </defs>
                     </svg>
                 </div>
-                <span class="brand-name">Lend<span>Flow</span></span>
+                <span class="brand-name">Wofi</span>
             </div>
 
             <nav class="nav-menu">
@@ -226,7 +226,7 @@
                             <div class="slider-wrapper">
                                 <input type="range" id="loan-amount-slider" min="100000" max="20000000" step="100000"
                                     value="100000" class="styled-slider">
-                                <div class="slider-limits">
+                                <div class="slider-labels">
                                     <span>1 Lakh</span>
                                     <span>1 Crore</span>
                                     <span>2 Crore</span>
@@ -247,10 +247,11 @@
                             <!-- Tenure Field -->
                             <div class="input-group">
                                 <label for="loan-tenure">Tenure (Months)</label>
-                                <div class="input-wrapper number-input">
-                                    <input type="number" id="loan-tenure" class="form-control" min="1" max="60"
-                                        value="6" step="1">
-                                    <span class="input-suffix">Months</span>
+                                <div class="input-wrapper select-input">
+                                    <select id="loan-tenure" class="form-control">
+                                        <option value="3">3 Months</option>
+                                        <option value="6" selected>6 Months</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -363,18 +364,6 @@
                             </div>
                         </div>
 
-                        <!-- Dynamic Visual Ratio Bar -->
-                        <div class="ratio-bar-section">
-                            <div class="ratio-labels">
-                                <span>Principal (93.5%)</span>
-                                <span>Total Cost (6.5%)</span>
-                            </div>
-                            <div class="ratio-bar-track">
-                                <div class="ratio-bar-fill principal-fill" id="ratio-bar-principal"
-                                    style="width: 93.5%"></div>
-                                <div class="ratio-bar-fill interest-fill" id="ratio-bar-cost" style="width: 6.5%"></div>
-                            </div>
-                        </div>
 
                         <!-- Proceed Button (For transitioning or submitting) -->
                         <button class="btn btn-primary btn-block" id="proceed-button" onclick="handleProceedAction()"
