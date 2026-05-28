@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tenureMonths: 6,            // Default 6 months
         emiDueDay: 8,               // Default 8th day of month
         roiAnnual: 13.00,           // Default 13.00% p.a.
-        processingFeePct: 0.50,     // Default 0.50%
         minLimit: 100000,           // 1 Lakh min
         maxLimit: 20000000          // 2 Crore max
     };
@@ -24,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loanTenureInput = document.getElementById('loan-tenure');
     const emiDueDayInput = document.getElementById('emi-due-day');
     const interestRateInput = document.getElementById('interest-rate');
-    const processingFeePctInput = document.getElementById('processing-fee-pct');
     const brokenDaysDisplay = document.getElementById('broken-days-display');
 
     // Outputs
@@ -32,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const monthlyPrincipalDisplay = document.getElementById('monthly-principal-display');
     const monthlyInterestDisplay = document.getElementById('monthly-interest-display');
     const totalInterestDisplay = document.getElementById('total-interest-display');
-    const totalPfDisplay = document.getElementById('total-pf-display');
     const totalCostDisplay = document.getElementById('total-cost-display');
     const ratioBarPrincipal = document.getElementById('ratio-bar-principal');
     const ratioBarCost = document.getElementById('ratio-bar-cost');
@@ -119,9 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 2. Generate Installment Dates Array
         const installments = [];
-        
+
         // Month offset starting from the month after disbursal month
-        for (let i = 1; i <= state.tenureMonths; i++) {
+        // If disbursal day is 21 or later, first EMI shifts to next-to-next month (start offset = 2)
+        const startOffset = (disbursalDay >= 21) ? 2 : 1;
+        for (let i = startOffset; i < startOffset + state.tenureMonths; i++) {
             // Target month
             let targetMonth = disbursalMonth + i;
             let targetYear = disbursalYear + Math.floor(targetMonth / 12);
@@ -130,6 +129,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Handle date overflow for shorter months (e.g. February)
             const daysInMonth = new Date(Date.UTC(targetYear, targetMonth + 1, 0)).getUTCDate();
             let dueDay = state.emiDueDay;
+            if (disbursalDay === 31) {
+                dueDay = 31;
+            }
             if (dueDay > daysInMonth) dueDay = daysInMonth;
 
             const emiDate = new Date(Date.UTC(targetYear, targetMonth, dueDay));
@@ -139,33 +141,57 @@ document.addEventListener('DOMContentLoaded', () => {
         // 3. Compute Days and Split Interest
         // Last payment date represents the maturity date
         const lastEmiDate = installments[installments.length - 1];
-        
+
         // Calculate Total Days between Disbursal and Maturity (Inclusive)
         const diffTime = lastEmiDate.getTime() - disbursalDate.getTime();
         const totalDaysInclusive = Math.round(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-        // Broken days calculation: Days between disbursal and first standard cycle start
-        // Usually, a full cycle is 30 days. If first EMI period is shorter, broken days = (Disbursal Day - EMI Due Day)
-        // For Disbursal May 15 and EMI Day 8:
-        let brokenDays = disbursalDay - state.emiDueDay;
-        if (brokenDays < 0) brokenDays = 0; // Simple representation matching ₹0 user broken period cost
+        // Calculate Broken Days based on the 21st rule
+        let brokenDays = 0;
+        const firstEmiDate = installments[0];
+
+        if (disbursalDay === 31) {
+            brokenDays = 0;
+        } else if (disbursalDay >= 21) {
+            // Broken period is from Disbursal Date to the first cycle date (which is one month before first EMI)
+            let cycleMonth = firstEmiDate.getUTCMonth() - 1;
+            let cycleYear = firstEmiDate.getUTCFullYear();
+            if (cycleMonth < 0) {
+                cycleMonth = 11;
+                cycleYear--;
+            }
+            const daysInCycleMonth = new Date(Date.UTC(cycleYear, cycleMonth + 1, 0)).getUTCDate();
+            let cycleDueDay = state.emiDueDay;
+            if (cycleDueDay > daysInCycleMonth) cycleDueDay = daysInCycleMonth;
+
+            const firstCycleStartDate = new Date(Date.UTC(cycleYear, cycleMonth, cycleDueDay));
+            const diffTimeCycle = firstCycleStartDate.getTime() - disbursalDate.getTime();
+            brokenDays = Math.round(diffTimeCycle / (1000 * 60 * 60 * 24)) + 1;
+        } else {
+            // Absolute difference between disbursal day and standard EMI due day
+            let activeDueDay = state.emiDueDay;
+            brokenDays = Math.abs(disbursalDay - activeDueDay);
+        }
+
+        if (brokenDays < 0) brokenDays = 0;
         brokenDaysDisplay.value = brokenDays;
 
-        // Processing Fees and GST components
-        const pfBase = state.loanAmount * (state.processingFeePct / 100);
-        const pfGst = pfBase * 0.18; // 18% GST on Processing Fees
-        const pfTotal = pfBase + pfGst;
-
-        // Interest calculation
-        // Total Interest = Principal * ROI% * (TotalDaysInclusive / 365)
+        // Interest calculations matching analyst formulas in images
+        // 1. Total Interest accrued across entire duration (from Disbursal to Maturity Date, inclusive)
         const totalInterest = state.loanAmount * (state.roiAnnual / 100) * (totalDaysInclusive / 365);
-        const totalFinanceCost = pfTotal + totalInterest;
+
+        // 2. Broken Period Interest (EMI 0) = Principal * ROI% * (BrokenDays / 365)
+        const brokenPeriodInterest = state.loanAmount * (state.roiAnnual / 100) * (brokenDays / 365);
+
+        // 3. Regular Monthly Interest = (Total Interest - Broken Period Interest) / Tenure
+        const regularTotalInterest = totalInterest - brokenPeriodInterest;
+        const monthlyInterest = regularTotalInterest / state.tenureMonths;
+
+        const totalRepayment = state.loanAmount + totalInterest;
 
         // Monthly repayments split
         // Monthly Principal = Principal / Tenure
         const monthlyPrincipal = state.loanAmount / state.tenureMonths;
-        // Monthly Interest = Total Interest / Tenure (Flat monthly allocation matching sheet values)
-        const monthlyInterest = totalInterest / state.tenureMonths;
         const monthlyEmiTotal = monthlyPrincipal + monthlyInterest;
 
         // 4. Update Summaries
@@ -174,13 +200,12 @@ document.addEventListener('DOMContentLoaded', () => {
         monthlyInterestDisplay.textContent = formatCurrency(monthlyInterest);
 
         totalInterestDisplay.textContent = formatCurrency(totalInterest);
-        totalPfDisplay.textContent = formatCurrency(pfTotal);
-        totalCostDisplay.textContent = formatCurrency(totalFinanceCost);
+        totalCostDisplay.textContent = formatCurrency(totalRepayment);
 
         // Update Ratio Progress Bar
-        const totalCostSum = state.loanAmount + totalInterest + pfTotal;
+        const totalCostSum = state.loanAmount + totalInterest;
         const principalPct = (state.loanAmount / totalCostSum) * 100;
-        const costPct = ((totalInterest + pfTotal) / totalCostSum) * 100;
+        const costPct = (totalInterest / totalCostSum) * 100;
 
         if (ratioBarPrincipal && ratioBarCost) {
             ratioBarPrincipal.style.width = `${principalPct}%`;
@@ -189,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (labels) {
                 labels.innerHTML = `
                     <span>Principal (${principalPct.toFixed(1)}%)</span>
-                    <span>Total Cost (${costPct.toFixed(1)}%)</span>
+                    <span>Total Interest (${costPct.toFixed(1)}%)</span>
                 `;
             }
         }
@@ -197,14 +222,15 @@ document.addEventListener('DOMContentLoaded', () => {
         // 5. Populate Detailed Repayment Schedule Table
         repaymentScheduleBody.innerHTML = '';
 
-        // Row 0: Starting State
+        // Row 0: Broken Period Interest Row (EMI 0)
+        const emiZeroDate = installments[0];
         const row0Html = `
             <tr>
                 <td class="font-heading">0</td>
-                <td>${formatDateShort(disbursalDate)}</td>
+                <td>${formatDateShort(emiZeroDate)}</td>
                 <td>-</td>
-                <td>-</td>
-                <td>-</td>
+                <td>${formatCurrency(brokenPeriodInterest)}</td>
+                <td>${formatCurrency(brokenPeriodInterest)}</td>
                 <td class="font-heading">${formatCurrency(state.loanAmount)}</td>
             </tr>
         `;
@@ -212,8 +238,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let balancePrincipal = state.loanAmount;
         let cumulativePrincipal = 0;
-        let cumulativeInterest = 0;
-        let cumulativeTotal = 0;
+        let cumulativeInterest = Math.round(brokenPeriodInterest);
+        let cumulativeTotal = Math.round(brokenPeriodInterest);
 
         for (let j = 0; j < state.tenureMonths; j++) {
             const emiDate = installments[j];
@@ -224,9 +250,10 @@ document.addEventListener('DOMContentLoaded', () => {
             let currentInterestRepay = Math.round(monthlyInterest);
             let currentEmiTotal = currentPrincipalRepay + currentInterestRepay;
 
-            // Make sure the last installment clears exactly to zero (handles float rounding)
+            // Make sure the last installment clears exactly to zero (handles float rounding) and balances cumulative interest
             if (emiNo === state.tenureMonths) {
                 currentPrincipalRepay = balancePrincipal;
+                currentInterestRepay = Math.round(totalInterest) - cumulativeInterest;
                 currentEmiTotal = currentPrincipalRepay + currentInterestRepay;
                 balancePrincipal = 0;
             } else {
@@ -273,14 +300,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loanAmountInput.addEventListener('blur', () => {
         let raw = parseInputNumber(loanAmountInput.value);
-        
+
         if (raw < state.minLimit) raw = state.minLimit;
         if (raw > state.maxLimit) raw = state.maxLimit;
-        
+
         state.loanAmount = raw;
         loanAmountInput.value = raw.toLocaleString('en-IN');
         loanAmountSlider.value = raw;
-        
+
         runCalculations();
     });
 
@@ -336,11 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
         runCalculations();
     });
 
-    processingFeePctInput.addEventListener('input', (e) => {
-        const val = parseFloat(e.target.value) || 0;
-        state.processingFeePct = val;
-        runCalculations();
-    });
+
 
     // Themes / Mode selector toggle (Light Mode support)
     const themeBtn = document.getElementById('theme-mode-btn');
@@ -350,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
     themeBtn.addEventListener('click', () => {
         body.classList.toggle('light-mode');
         const isLight = body.classList.contains('light-mode');
-        
+
         if (isLight) {
             localStorage.setItem('theme', 'light');
             sunIcon.style.display = 'none';
@@ -383,10 +406,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
         `;
-        
+
         toastContainer.insertAdjacentHTML('beforeend', toastHtml);
         const toastEl = document.getElementById(id);
-        
+
         setTimeout(() => {
             toastEl.style.opacity = '0';
             toastEl.style.transform = 'translateY(-10px)';
@@ -399,9 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ==========================================================================
        Proceed Action Trigger
        ========================================================================== */
-    window.handleProceedAction = function() {
+    window.handleProceedAction = function () {
         showToast(
-            'Term Loan Saved', 
+            'Term Loan Saved',
             `Distributor Term Loan parameters captured! Proceeding to credit validation logs.`
         );
     };
@@ -419,7 +442,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 number: '02',
                 title: 'Custom Terms Set',
-                desc: 'Wofi configures terms, processing fees (0.50%), and the exact monthly EMI date.'
+                desc: 'Wofi configures terms and the exact monthly EMI date.'
             },
             {
                 number: '03',
@@ -482,7 +505,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loanTenureInput.value = state.tenureMonths;
     emiDueDayInput.value = state.emiDueDay;
     interestRateInput.value = state.roiAnnual.toFixed(2);
-    processingFeePctInput.value = state.processingFeePct.toFixed(2);
 
     renderFlowSteps();
     runCalculations();

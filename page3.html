@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wofi | DBTL (Distributor Term Loan)</title>
     <meta name="description"
-        content="Premium term financing platform for Distributors. Calculate processing fees, GST, total interest, and generate detailed monthly repayment schedules.">
+        content="Premium term financing platform for Distributors. Calculate total interest and generate detailed monthly repayment schedules.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -167,10 +167,6 @@
                                 <span class="metric-label">Repayment Schedule</span>
                                 <span class="metric-value">Monthly Equated Principal (EMI)</span>
                             </div>
-                            <div class="structure-metric">
-                                <span class="metric-label">Processing Fees</span>
-                                <span class="metric-value">0.50% (One-time cost)</span>
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -279,18 +275,8 @@
                             </div>
                         </div>
 
-                        <!-- Grid for Processing Fees & Broken Days -->
+                        <!-- Grid for Broken Days -->
                         <div class="form-row-grid">
-                            <!-- Processing Fees -->
-                            <div class="input-group">
-                                <label for="processing-fee-pct">Processing Fees (%)</label>
-                                <div class="input-wrapper number-input">
-                                    <input type="number" id="processing-fee-pct" class="form-control" min="0" max="5"
-                                        value="0.50" step="0.05">
-                                    <span class="input-suffix">%</span>
-                                </div>
-                            </div>
-
                             <!-- Broken Days (Read-only / Auto) -->
                             <div class="input-group readonly-group">
                                 <label>Broken Days</label>
@@ -319,7 +305,7 @@
                             </div>
                             <div>
                                 <h2>Financing Summary</h2>
-                                <p class="card-desc">Accrued interest, processing fees, and overall cost structure</p>
+                                <p class="card-desc">Accrued interest and overall cost structure</p>
                             </div>
                         </div>
                     </div>
@@ -347,19 +333,9 @@
 
                             <div class="metric-summary-box">
                                 <div class="metric-content">
-                                    <span class="metric-label">One-Time PF Dues</span>
-                                    <span class="metric-val" id="total-pf-display">₹590</span>
-                                    <span style="font-size: 10px; color: var(--text-muted);">Includes 18% GST
-                                        (₹90)</span>
-                                </div>
-                            </div>
-
-                            <div class="metric-summary-box">
-                                <div class="metric-content">
-                                    <span class="metric-label">Total Finance Cost</span>
-                                    <span class="metric-val" id="total-cost-display">₹6,930</span>
-                                    <span style="font-size: 10px; color: var(--text-muted);">Interest + PF with
-                                        GST</span>
+                                    <span class="metric-label">Total Repayment</span>
+                                    <span class="metric-val" id="total-cost-display">₹1,06,340</span>
+                                    <span style="font-size: 10px; color: var(--text-muted);">Principal + Interest</span>
                                 </div>
                             </div>
                         </div>
