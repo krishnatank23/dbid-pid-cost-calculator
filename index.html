@@ -61,7 +61,7 @@
                     </div>
                     <div class="nav-label">
                         <span class="nav-title-main">DBID-PID</span>
-                        <span class="nav-title-sub">(Distributor & Purchase Invoice Discounting)</span>
+                        <span class="nav-title-sub">(Distributor/Purchase Invoice Discounting)</span>
                     </div>
                 </a>
                 <a href="page2.html" class="nav-item" id="nav-page-2">
@@ -104,38 +104,10 @@
             <!-- Header -->
             <header class="top-bar">
                 <div class="header-title">
-                    <h1>Distributor & Purchase Invoice Discounting</h1>
+                    <h1>Distributor/Purchase Invoice Discounting</h1>
                     <p class="subtitle">Accelerate cash flow through strategic invoice financing models</p>
                 </div>
                 <div class="header-actions">
-                    <div class="theme-toggle" id="theme-mode-btn" title="Toggle Light/Dark Mode">
-                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="5" />
-                            <line x1="12" y1="1" x2="12" y2="3" />
-                            <line x1="12" y1="21" x2="12" y2="23" />
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                            <line x1="1" y1="12" x2="3" y2="12" />
-                            <line x1="21" y1="12" x2="23" y2="12" />
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                        </svg>
-                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" style="display: none;">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                        </svg>
-                    </div>
-                    <div class="date-indicator">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                            <line x1="16" y1="2" x2="16" y2="6" />
-                            <line x1="8" y1="2" x2="8" y2="6" />
-                            <line x1="3" y1="10" x2="21" y2="10" />
-                        </svg>
-                        <span id="current-time-display">May 19, 2026</span>
-                    </div>
                 </div>
             </header>
 
@@ -192,7 +164,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Invoice Details</span>
-                                    <span class="detail-value">Brand Invoice (Purchase Invoice)</span>
+                                    <span class="detail-value">Sales Invoice</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="detail-label">Loan Disbursed To</span>
@@ -236,7 +208,7 @@
                                 </svg>
                             </div>
                             <div class="limit-alert-text">
-                                Allowed Range: <strong id="min-limit-display">₹1,00,000</strong> to <strong
+                                Allowed Range: <strong id="min-limit-display">₹25,00,000</strong> to <strong
                                     id="max-limit-display">₹2,00,00,000</strong> (2 Crore)
                             </div>
                         </div>
@@ -250,13 +222,13 @@
                             <div class="input-wrapper currency-input">
                                 <span class="input-prefix">₹</span>
                                 <input type="text" id="loan-amount" class="form-control numeric-input"
-                                    placeholder="500,000" value="500,000" autocomplete="off">
+                                    placeholder="25,00,000" value="25,00,000" autocomplete="off">
                             </div>
                             <div class="slider-wrapper">
-                                <input type="range" id="loan-amount-slider" min="100000" max="20000000" step="100000"
-                                    value="500000" class="styled-slider">
+                                <input type="range" id="loan-amount-slider" min="2500000" max="20000000" step="100000"
+                                    value="2500000" class="styled-slider">
                                 <div class="slider-labels">
-                                    <span>1 Lakh</span>
+                                    <span>25 Lakh</span>
                                     <span>1 Crore</span>
                                     <span>2 Crore</span>
                                 </div>
@@ -312,7 +284,7 @@
                         </div>
 
                         <!-- Extra Options: Interest Rate Slider (Default 18.25% p.a. or 0.05% per day) -->
-                        <div class="expandable-section collapsed" id="advanced-settings">
+                        <div class="expandable-section collapsed" id="advanced-settings" style="display: none;">
                             <button type="button" class="expand-toggle-btn" onclick="toggleAdvancedSettings()">
                                 <span>Advanced Interest Parameters</span>
                                 <svg class="chevron-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -321,7 +293,7 @@
                                 </svg>
                             </button>
                             <div class="expandable-content">
-                                <div class="input-group">
+                                <div class="input-group" style="display: none;">
                                     <div class="input-header">
                                         <label for="interest-rate">Interest Rate (% p.a.)</label>
                                         <span class="rate-daily-badge" id="daily-rate-display">0.05% / Day</span>
@@ -374,10 +346,10 @@
                         <!-- Primary Large Display -->
                         <div class="primary-output-hero">
                             <span class="output-hero-label">Total Amount to be Paid</span>
-                            <div class="output-hero-val" id="total-to-pay-display">₹5,13,250</div>
+                            <div class="output-hero-val" id="total-to-pay-display">₹25,66,250</div>
                             <div class="output-breakdown-subtext">
-                                Principal <span id="principal-subtext">₹5,00,000</span> + Interest <span
-                                    id="interest-subtext">₹13,250</span>
+                                Principal <span id="principal-subtext">₹25,00,000</span> + Interest <span
+                                    id="interest-subtext">₹66,250</span>
                             </div>
                         </div>
 
@@ -399,18 +371,11 @@
                             </div>
 
                             <div class="metric-summary-box">
-                                <span class="metric-icon">
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M6 3h12" />
-                                        <path d="M6 8h12" />
-                                        <path d="M6 3a5 5 0 0 1 5 5c0 4-5 8-5 8" />
-                                        <path d="M9 8l6 8" />
-                                    </svg>
-                                </span>
+                                <span class="metric-icon"
+                                    style="font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 18px; color: var(--accent-primary);">₹</span>
                                 <div class="metric-content">
                                     <span class="metric-label">Interest Charge</span>
-                                    <span class="metric-val text-accent" id="interest-to-pay-display">₹13,250</span>
+                                    <span class="metric-val text-accent" id="interest-to-pay-display">₹66,250</span>
                                 </div>
                             </div>
                         </div>

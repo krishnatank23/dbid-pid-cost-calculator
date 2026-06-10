@@ -6,12 +6,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Platform State Object
     const state = {
-        loanAmount: 100000,         // Default ₹1,00,000
+        loanAmount: 2500000,        // Default ₹25,00,000 (25 Lakh)
         disbursalDateStr: '2026-05-15', // YYYY-MM-DD
         tenureMonths: 6,            // Default 6 months
         emiDueDay: 8,               // Default 8th day of month
-        roiAnnual: 13.00,           // Default 13.00% p.a.
-        minLimit: 100000,           // 1 Lakh min
+        roiAnnual: 12.00,           // Default 12.00% p.a.
+        minLimit: 2500000,          // 25 Lakh min
         maxLimit: 20000000          // 2 Crore max
     };
 
@@ -46,7 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Current Time Setup (Dynamic System Time & Day)
     const initDate = new Date();
-    document.getElementById('current-time-display').innerHTML = formatDateWithDay(initDate);
+    const currentTimeDisplay = document.getElementById('current-time-display');
+    if (currentTimeDisplay) {
+        currentTimeDisplay.innerHTML = formatDateWithDay(initDate);
+    }
 
     /* ==========================================================================
        Formatters & Date Helpers
@@ -95,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // 1. Inputs validation
         let hasErrors = false;
         if (state.loanAmount < state.minLimit) {
-            document.getElementById('amount-validation-msg').textContent = 'Minimum is ₹1,00,000';
+            document.getElementById('amount-validation-msg').textContent = `Minimum is ₹${state.minLimit.toLocaleString('en-IN')}`;
             loanAmountInput.parentElement.classList.add('error');
             hasErrors = true;
         } else if (state.loanAmount > state.maxLimit) {
@@ -107,7 +110,26 @@ document.addEventListener('DOMContentLoaded', () => {
             loanAmountInput.parentElement.classList.remove('error');
         }
 
-        if (hasErrors) return;
+        // ROI Validation
+        const roiValidationMsg = document.getElementById('roi-validation-msg');
+        if (state.roiAnnual < 12) {
+            if (roiValidationMsg) roiValidationMsg.textContent = 'Minimum ROI is 12%';
+            interestRateInput.parentElement.classList.add('error');
+            hasErrors = true;
+        } else {
+            if (roiValidationMsg) roiValidationMsg.textContent = '';
+            interestRateInput.parentElement.classList.remove('error');
+        }
+
+        if (hasErrors) {
+            emiAmountDisplay.textContent = 'N/A';
+            monthlyPrincipalDisplay.textContent = 'N/A';
+            monthlyInterestDisplay.textContent = 'N/A';
+            totalInterestDisplay.textContent = 'N/A';
+            totalCostDisplay.textContent = 'N/A';
+            repaymentScheduleBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--danger); font-weight: 600; padding: 20px;">Please enter valid inputs</td></tr>';
+            return;
+        }
 
         const disbursalDate = parseUTCDate(state.disbursalDateStr);
         const disbursalYear = disbursalDate.getUTCFullYear();
@@ -363,29 +385,42 @@ document.addEventListener('DOMContentLoaded', () => {
         runCalculations();
     });
 
+    interestRateInput.addEventListener('blur', () => {
+        let val = parseFloat(interestRateInput.value) || 12.00;
+        if (val < 12) {
+            val = 12.00;
+            showToast('ROI Limit', 'Minimum interest rate is 12% p.a.');
+        }
+        state.roiAnnual = val;
+        interestRateInput.value = val.toFixed(2);
+        runCalculations();
+    });
+
 
 
     // Themes / Mode selector toggle (Light Mode support)
     const themeBtn = document.getElementById('theme-mode-btn');
-    const sunIcon = themeBtn.querySelector('.sun-icon');
-    const moonIcon = themeBtn.querySelector('.moon-icon');
+    if (themeBtn) {
+        const sunIcon = themeBtn.querySelector('.sun-icon');
+        const moonIcon = themeBtn.querySelector('.moon-icon');
 
-    themeBtn.addEventListener('click', () => {
-        body.classList.toggle('light-mode');
-        const isLight = body.classList.contains('light-mode');
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
 
-        if (isLight) {
-            localStorage.setItem('theme', 'light');
-            sunIcon.style.display = 'none';
-            moonIcon.style.display = 'block';
-            showToast('Visual Style Updated', 'Switched to elegant Light Mode dashboard style.');
-        } else {
-            localStorage.setItem('theme', 'dark');
-            sunIcon.style.display = 'block';
-            moonIcon.style.display = 'none';
-            showToast('Visual Style Updated', 'Returned to ambient Dark Mode dashboard style.');
-        }
-    });
+            if (isLight) {
+                localStorage.setItem('theme', 'light');
+                if (sunIcon) sunIcon.style.display = 'none';
+                if (moonIcon) moonIcon.style.display = 'block';
+                showToast('Visual Style Updated', 'Switched to elegant Light Mode dashboard style.');
+            } else {
+                localStorage.setItem('theme', 'dark');
+                if (sunIcon) sunIcon.style.display = 'block';
+                if (moonIcon) moonIcon.style.display = 'none';
+                showToast('Visual Style Updated', 'Returned to ambient Dark Mode dashboard style.');
+            }
+        });
+    }
 
     /* ==========================================================================
        Toast Notifications Dispatcher
@@ -490,12 +525,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'light') {
         body.classList.add('light-mode');
-        if (sunIcon) sunIcon.style.display = 'none';
-        if (moonIcon) moonIcon.style.display = 'block';
     } else {
         body.classList.remove('light-mode');
-        if (sunIcon) sunIcon.style.display = 'block';
-        if (moonIcon) moonIcon.style.display = 'none';
     }
 
     // Synchronize UI elements with state parameters on initial page load

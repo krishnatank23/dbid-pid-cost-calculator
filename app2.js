@@ -72,7 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Current Time Setup (Dynamic System Time & Day)
     const initDate = new Date();
-    document.getElementById('current-time-display').innerHTML = formatDateWithDay(initDate);
+    const currentTimeDisplay = document.getElementById('current-time-display');
+    if (currentTimeDisplay) {
+        currentTimeDisplay.innerHTML = formatDateWithDay(initDate);
+    }
 
     /* ==========================================================================
        Operational Flow Configuration
@@ -81,13 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
         dbid: [
             {
                 number: '01',
-                title: 'Retailer Sales Invoice',
+                title: 'Distributor Sales Invoice',
                 desc: 'Distributor delivers goods to retailer and provides their sale invoices to the Wofi system.'
             },
             {
                 number: '02',
                 title: 'Invoice Authenticated',
-                desc: 'Wofi dynamically verifies the retailer sale invoices. No heavy collaterals required.'
+                desc: 'Wofi dynamically verifies the sale invoices. No heavy collaterals required.'
             },
             {
                 number: '03',
@@ -103,18 +106,18 @@ document.addEventListener('DOMContentLoaded', () => {
         pid: [
             {
                 number: '01',
-                title: 'Brand Purchase Invoice',
-                desc: 'Retailer purchases brand stock and provides purchase invoices to the Wofi platform.'
+                title: 'Seller Invoice',
+                desc: 'Retailer purchases brand stock and provides seller invoices to the Wofi platform.'
             },
             {
                 number: '02',
                 title: 'Invoice Authenticated',
-                desc: 'Wofi verifies the brand supply invoice details. Quick automated risk check completed.'
+                desc: 'Wofi dynamically verifies the invoices.'
             },
             {
                 number: '03',
                 title: 'Funds Disbursed',
-                desc: 'Loan amount is disbursed directly to the Retailer to purchase premium inventories immediately.'
+                desc: 'Loan amount is disbursed directly to the Retailer.'
             },
             {
                 number: '04',
@@ -504,25 +507,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Themes / Mode selector toggle (Light Mode support)
     const themeBtn = document.getElementById('theme-mode-btn');
-    const sunIcon = themeBtn.querySelector('.sun-icon');
-    const moonIcon = themeBtn.querySelector('.moon-icon');
+    if (themeBtn) {
+        const sunIcon = themeBtn.querySelector('.sun-icon');
+        const moonIcon = themeBtn.querySelector('.moon-icon');
 
-    themeBtn.addEventListener('click', () => {
-        body.classList.toggle('light-mode');
-        const isLight = body.classList.contains('light-mode');
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            const isLight = body.classList.contains('light-mode');
 
-        if (isLight) {
-            localStorage.setItem('theme', 'light');
-            sunIcon.style.display = 'none';
-            moonIcon.style.display = 'block';
-            showToast('Visual Style Updated', 'Switched to elegant Light Mode dashboard style.');
-        } else {
-            localStorage.setItem('theme', 'dark');
-            sunIcon.style.display = 'block';
-            moonIcon.style.display = 'none';
-            showToast('Visual Style Updated', 'Returned to ambient Dark Mode dashboard style.');
-        }
-    });
+            if (isLight) {
+                localStorage.setItem('theme', 'light');
+                if (sunIcon) sunIcon.style.display = 'none';
+                if (moonIcon) moonIcon.style.display = 'block';
+                showToast('Visual Style Updated', 'Switched to elegant Light Mode dashboard style.');
+            } else {
+                localStorage.setItem('theme', 'dark');
+                if (sunIcon) sunIcon.style.display = 'block';
+                if (moonIcon) moonIcon.style.display = 'none';
+                showToast('Visual Style Updated', 'Returned to ambient Dark Mode dashboard style.');
+            }
+        });
+    }
 
     /* ==========================================================================
        Locked Pages Handler (For Phase 2, 3, 4)

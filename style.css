@@ -1302,6 +1302,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     color: var(--text-secondary);
 }
 
+.timeline-step .date-display-wrapper {
+    align-items: center;
+    text-align: center;
+}
+
 .step-day-count {
     position: absolute;
     top: -24px;
@@ -2453,8 +2458,7 @@ body.mode-pid .btn-primary:hover svg {
 
 /* Glass yellow outline buttons (Fill: #211C0B, Stroke: #FFCB05 0.5px) */
 .btn-secondary,
-.theme-toggle,
-.expand-toggle-btn {
+.theme-toggle {
     background-color: #211C0B !important;
     /* Fill #211C0B */
     border: 0.5px solid #FFCB05 !important;
