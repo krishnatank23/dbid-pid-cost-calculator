@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         pid: [
             {
                 number: '01',
-                title: 'Seller Invoice',
-                desc: 'Retailer purchases brand stock and provides seller invoices to the Wofi platform.'
+                title: 'Seller Invoice Upload',
+                desc: 'Seller provides the invoice to the platform, and the Retailer approves it via OTP.'
             },
             {
                 number: '02',
@@ -117,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 number: '03',
                 title: 'Funds Disbursed',
-                desc: 'Loan amount is disbursed directly to the Retailer.'
+                desc: 'Loan amount is disbursed directly to the Seller.'
             },
             {
                 number: '04',
                 title: 'Retailer Settles Loan',
-                desc: 'Retailer bears the interest (0.05%/day) and repays total dues on or before Due Date.'
+                desc: 'Retailer settles the loan. Interest can be borne by either the Retailer, the Seller, or shared partially between both.'
             }
         ]
     };
