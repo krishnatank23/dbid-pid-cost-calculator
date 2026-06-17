@@ -7,13 +7,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Platform State Object (Preconfigured for SCF/PID default page load)
     const state = {
         mode: 'pid',               // Default: 'pid' (SCF)
-        loanAmount: 100000,        // Default ₹1,00,000
+        loanAmount: 2500000,       // Default ₹25,00,000 (25 Lakh)
         loanDateStr: '2026-05-20', // YYYY-MM-DD
         tenureDays: 60,            // Default 60 days
         repaymentDateStr: '2026-07-10', // YYYY-MM-DD
         interestRateAnnual: 18.25, // Default 18.25% p.a. (corresponds to 0.05% per day)
         minLimit: 100000,          // 1 Lakh min
-        maxLimit: 20000000,        // 2 Crore max for SCF
+        maxLimit: 5000000,         // 50 Lakh max for SCF
         isInclusiveDays: true      // (End - Start + 1)
     };
 
@@ -106,8 +106,8 @@ document.addEventListener('DOMContentLoaded', () => {
         pid: [
             {
                 number: '01',
-                title: 'Seller Invoice Upload',
-                desc: 'Seller provides the invoice to the platform, and the Retailer approves it via OTP.'
+                title: 'Seller Invoice',
+                desc: 'Seller provides invoice to the platform, and then Retailer approves it via OTP.'
             },
             {
                 number: '02',
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
             {
                 number: '04',
                 title: 'Retailer Settles Loan',
-                desc: 'Retailer settles the loan. Interest can be borne by either the Retailer, the Seller, or shared partially between both.'
+                desc: 'Retailer settles the loan. Interest can be borne by either of the parties or is shared partially between the two.'
             }
         ]
     };
@@ -634,9 +634,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set custom bounds displays
     minLimitDisplay.textContent = '₹1,00,000';
-    maxLimitDisplay.textContent = '₹2,00,00,000';
+    maxLimitDisplay.textContent = '₹50,00,000';
     loanAmountSlider.min = 100000;
-    loanAmountSlider.max = 20000000;
+    loanAmountSlider.max = 5000000;
 
     // Set active badges
     proceedModeBadge.textContent = 'SCF';
